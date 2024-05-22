@@ -5,7 +5,7 @@ import { IIngredient } from '../../models/common';
 
 interface BurgerConstructorProps {
     applyIngredients: IIngredient[]
-    applyBun: IIngredient
+    applyBun?: IIngredient
 }
 
 
@@ -13,15 +13,17 @@ const BurgerConstructor: FC<BurgerConstructorProps> = ({ applyIngredients, apply
 
     return (
         <div className={`${styles.wrapperBurgerIngredients} mt-25`}>
-            <div className="pl-8 mb-4">
-                <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text={applyBun.name + ' (верх)'}
-                    price={applyBun.price}
-                    thumbnail={applyBun.image}
-                />
-            </div>
+            {applyBun &&
+                <div className="pl-8 mb-4">
+                    <ConstructorElement
+                        type="top"
+                        isLocked={true}
+                        text={applyBun.name + ' (верх)'}
+                        price={applyBun.price}
+                        thumbnail={applyBun.image}
+                    />
+                </div>
+            }
             <ul className={`${styles.list} list`}>
                 {applyIngredients.map(ingredient => {
                     return (
@@ -41,15 +43,17 @@ const BurgerConstructor: FC<BurgerConstructorProps> = ({ applyIngredients, apply
 
 
             </ul>
-            <div className="pl-8 mt-4 mb-4">
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text={applyBun.name + ' (низ)'}
-                    price={applyBun.price}
-                    thumbnail={applyBun.image}
-                />
-            </div>
+            {applyBun &&
+                <div className="pl-8 mt-4 mb-4">
+                    <ConstructorElement
+                        type="bottom"
+                        isLocked={true}
+                        text={applyBun.name + ' (низ)'}
+                        price={applyBun.price}
+                        thumbnail={applyBun.image}
+                    />
+                </div>
+            }
         </div>
     );
 };
