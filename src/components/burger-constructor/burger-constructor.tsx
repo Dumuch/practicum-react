@@ -1,15 +1,30 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
 import { IIngredient } from '../../models/common';
+import SubmitOrder from '../submit-order/submit-order';
+import { groupIngredients, randomInt } from '../../helpers';
 
 interface BurgerConstructorProps {
-    applyIngredients: IIngredient[]
-    applyBun?: IIngredient
+    ingredients: IIngredient[]
 }
 
 
-const BurgerConstructor: FC<BurgerConstructorProps> = ({ applyIngredients, applyBun }) => {
+const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) => {
+    const { buns, sauces, mains } = useMemo(() => {
+        return groupIngredients(ingredients)
+    }, [ingredients])
+
+    const applyIngredients = mains.slice(randomInt(1, mains.length - 1), randomInt(1, mains.length - 1)).concat(sauces.slice(randomInt(1, sauces.length - 1), randomInt(1, sauces.length - 1)))
+    const applyBun: IIngredient | undefined = buns[randomInt(0, buns.length - 1)]
+
+    const price = useMemo(() => {
+        return (
+            (applyBun ? applyBun.price * 2 : 0) +
+            applyIngredients.reduce((acc, item) => acc + item.price, 0)
+        );
+    }, [applyBun, applyIngredients]);
+
 
     return (
         <div className={`${styles.wrapperBurgerIngredients} mt-25`}>
@@ -54,6 +69,8 @@ const BurgerConstructor: FC<BurgerConstructorProps> = ({ applyIngredients, apply
                     />
                 </div>
             }
+
+            <SubmitOrder price={price} />
         </div>
     );
 };

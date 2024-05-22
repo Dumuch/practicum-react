@@ -29,21 +29,9 @@ function App() {
     }, []);
 
 
-    const buns = useMemo(() => {
-        return ingredients.filter((item) => item.type === 'bun')
-    }, [ingredients])
-
-    const mains = useMemo(() => {
-        return ingredients.filter((item) => item.type === 'main')
-    }, [ingredients])
-
-    const sauces = useMemo(() => {
-        return ingredients.filter((item) => item.type === 'sauce')
-    }, [ingredients])
 
 
-    const applyIngredients = mains.slice(randomInt(1, mains.length - 1), randomInt(1, mains.length - 1)).concat(sauces.slice(randomInt(1, sauces.length - 1), randomInt(1, sauces.length - 1)))
-    const applyBun: IIngredient | undefined = buns[randomInt(0, buns.length - 1)]
+
 
     return (
         <div className={`${styles.app} d-flex flex-column`}>
@@ -58,11 +46,10 @@ function App() {
                         ) : (
                             <>
                                 <div className={`${styles.column} mr-10`}>
-                                    <BurgerIngredients mains={mains} buns={buns} sauces={sauces} />
+                                    <BurgerIngredients ingredients={ingredients} />
                                 </div>
                                 <div className={styles.column}>
-                                    <BurgerConstructor applyIngredients={applyIngredients} applyBun={applyBun} />
-                                    <SubmitOrder applyIngredients={applyIngredients} applyBun={applyBun} />
+                                    <BurgerConstructor ingredients={ingredients} />
                                 </div>
                             </>
                         )}

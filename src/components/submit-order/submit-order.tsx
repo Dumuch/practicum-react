@@ -1,24 +1,15 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
-import { IIngredient } from '../../models/common';
 import OrderModal from '../order-modal/order-modal';
 import Modal from '../modal/modal';
 
 interface SubmitOrderProps {
-    applyIngredients: IIngredient[]
-    applyBun?: IIngredient
+    price: number
 }
 
-const SubmitOrder: FC<SubmitOrderProps> = ({ applyIngredients, applyBun }) => {
+const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
     const [modal, setModal] = useState(false)
-
-    const price = useMemo(() => {
-        return (
-            (applyBun ? applyBun.price * 2 : 0) +
-            applyIngredients.reduce((acc, item) => acc + item.price, 0)
-        );
-    }, [applyBun, applyIngredients]);
 
     const toggleModal = () => {
         setModal(prev => !prev)

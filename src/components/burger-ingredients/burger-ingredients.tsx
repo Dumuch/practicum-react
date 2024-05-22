@@ -1,27 +1,30 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import styles from './styles.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import { IIngredient } from '../../models/common';
 import Modal from '../modal/modal';
 import IngredientModal from '../ingredient-modal/ingredient-modal';
+import { groupIngredients } from '../../helpers';
 
 
 interface BurgerIngredientsProps {
-    buns: IIngredient[]
-    mains: IIngredient[]
-    sauces: IIngredient[]
+    ingredients: IIngredient[]
 }
 
-const BurgerIngredients: FC<BurgerIngredientsProps> = ({ buns, mains, sauces }) => {
+const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
     const [current, setCurrent] = React.useState('one')
     const [modal, setModal] = useState<IIngredient | null>(null)
 
-    const openModal = (ingredient:IIngredient) => () => {
+    const { buns, sauces, mains } = useMemo(() => {
+        return groupIngredients(ingredients)
+    }, [ingredients])
+
+    const openModal = (ingredient: IIngredient) => () => {
         setModal(ingredient)
     }
 
-    const closeModal = () =>{
+    const closeModal = () => {
         setModal(null)
     }
 
@@ -76,7 +79,8 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ buns, mains, sauces }) 
 
                 </ul>
             </div>
-            {modal && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientModal ingredient={modal} /></Modal>)}
+            {modal && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientModal
+                ingredient={modal} /></Modal>)}
         </section>
 
 
