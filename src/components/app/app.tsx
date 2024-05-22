@@ -27,10 +27,6 @@ function App() {
     }, []);
 
 
-
-
-
-
     return (
         <div className={`${styles.app} d-flex flex-column`}>
             <AppHeader />
