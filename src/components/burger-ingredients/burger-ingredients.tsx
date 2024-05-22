@@ -1,52 +1,74 @@
-import React from 'react';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { FC } from 'react';
 import styles from './styles.module.css'
-import { currentBun, currentIngredients } from '../../utils/mock-data';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import IngredientCard from '../ingredient-card/ingredient-card';
+import { IIngredient } from '../../models/common';
 
 
-const BurgerIngredients = () => {
+interface BurgerIngredientsProps {
+    buns: IIngredient[]
+    mains: IIngredient[]
+    sauces: IIngredient[]
+}
+
+const BurgerIngredients: FC<BurgerIngredientsProps> = ({buns, mains, sauces}) => {
+    const [current, setCurrent] = React.useState('one')
 
     return (
-        <div className={`${styles.wrapperBurgerIngredients} mt-25`}>
-            <div className="pl-8 mb-4">
-                <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text={currentBun.name}
-                    price={currentBun.price}
-                    thumbnail={currentBun.image}
-                />
+        <section className={styles.wrapperBurgerConstructor}>
+            <h2 className={'text text_type_main-large mt-10 mb-5'}>Соберите бургер</h2>
+            <div className={'d-flex mb-10'}>
+                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+                    Булки
+                </Tab>
+                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+                    Соусы
+                </Tab>
+                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+                    Начинки
+                </Tab>
             </div>
-            <ul className={`${styles.list} list`}>
-                {currentIngredients.map(i =>{
-                    return (
-                        <li className="pl-8 mb-4 position-relative">
-                            <div className={styles.dragButton}>
-                                <DragIcon type="primary" />
-                            </div>
-                            <ConstructorElement
-                                isLocked={false}
-                                text={i.name}
-                                price={i.price}
-                                thumbnail={i.image}
-                            />
-                        </li>
-                    )
-                })}
+            <div className={styles.wrapperIngredients}>
+                <h3 className={'text text_type_main-medium'}>Булки</h3>
+                <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
+                    {buns.map(ingredient => {
+                        return (
+                            <li key={ingredient._id}>
+                                <IngredientCard ingredient={ingredient} />
+                            </li>
+                        )
+                    })}
+                </ul>
+
+                <h3 className={'text text_type_main-medium'}>Соусы</h3>
+                <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
+                    {sauces.map(ingredient => {
+                        return (
+                            <li key={ingredient._id}>
+                                <IngredientCard ingredient={ingredient} />
+                            </li>
+                        )
+                    })}
+
+                </ul>
 
 
-            </ul>
-            <div className="pl-8 mt-4 mb-4">
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text={currentBun.name}
-                    price={currentBun.price}
-                    thumbnail={currentBun.image}
-                />
+                <h3 className={'text text_type_main-medium'}>Начинки</h3>
+                <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
+                    {mains.map(ingredient => {
+                        return (
+                            <li key={ingredient._id}>
+                                <IngredientCard ingredient={ingredient} />
+                            </li>
+                        )
+                    })}
+
+                </ul>
             </div>
-        </div>
-    );
+        </section>
+
+    )
+        ;
 };
 
 export default BurgerIngredients;

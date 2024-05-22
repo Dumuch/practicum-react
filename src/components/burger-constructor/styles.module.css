@@ -1,20 +1,19 @@
-.wrapperBurgerConstructor {
+.dragButton {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+.wrapperBurgerIngredients {
+    overflow: auto;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
-.list {
-    list-style: none;
-    gap: 24px;
-}
-
-.list li {
-    flex-basis: calc(50% - 12px);
-}
-
-.wrapperIngredients {
-    overflow: auto;
-}
-
-
-

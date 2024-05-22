@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { FC, useMemo } from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
-import { currentBun, currentIngredients } from '../../utils/mock-data';
+import { IIngredient } from '../../models/common';
 
+interface SubmitOrderProps {
+    applyIngredients: IIngredient[]
+    applyBun: IIngredient
+}
 
-const SubmitOrder = () => {
-    const total = currentIngredients.reduce((acc, item) =>{
-       return acc + item.price
-    },0)
+const SubmitOrder: FC<SubmitOrderProps> = ({ applyIngredients, applyBun }) => {
+    const price = useMemo(() => {
+        return (
+            (applyBun ? applyBun.price * 2 : 0) +
+            applyIngredients.reduce((acc, item) => acc + item.price, 0)
+        );
+    }, [applyBun, applyIngredients]);
+
     return (
         <div className="d-flex align-items-center justify-end mt-10">
             <div className={`${styles.costWrapper} d-flex mr-10 align-items-center`}>
-                <span className={'text text_type_digits-medium pr-2'}>{total + currentBun.price}</span>
+                <span className={'text text_type_digits-medium pr-2'}>{price}</span>
                 <CurrencyIcon type="primary" />
             </div>
 

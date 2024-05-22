@@ -1,5 +1,4 @@
 import { IIngredient } from '../models/common';
-import { randomInt } from '../helpers';
 
 export const ingredients: IIngredient[] =
     [
@@ -214,18 +213,3 @@ export const ingredients: IIngredient[] =
 
         }
     ]
-
-export const groupIngredients = ingredients.reduce((acc, i) => {
-    if (i.type === 'bun') {
-        acc.bun.push(i)
-    } else if (i.type === 'main') {
-        acc.main.push(i)
-    } else {
-        acc.sauce.push(i)
-    }
-    return acc
-}, { bun: [] as IIngredient[], main: [] as IIngredient[], sauce: [] as IIngredient[] })
-
-const { bun, main, sauce } = groupIngredients
-export const currentIngredients = main.slice(randomInt(1,main.length - 1),randomInt(1,main.length - 1)).concat(sauce.slice(randomInt(1,sauce.length - 1),randomInt(1,sauce.length - 1)))
-export const currentBun = groupIngredients.bun[randomInt(0,groupIngredients.bun.length - 1)]
