@@ -1,10 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import SubmitOrder from '../submit-order/submit-order';
-import { randomInt } from '../../helpers';
 import { IIngredient } from '../../models/common';
 import { API } from '../../constants';
 

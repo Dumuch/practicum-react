@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styles from './styles.module.css'
-import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IIngredient } from '../../models/common';
 
 interface IngredientCardProps {
