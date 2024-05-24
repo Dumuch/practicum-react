@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
-import OrderModal from '../order-modal/order-modal';
+import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 
 interface SubmitOrderProps {
@@ -27,7 +27,7 @@ const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
             </Button>
             {modal &&
                 <Modal onClose={toggleModal}>
-                    <OrderModal />
+                    <OrderDetails />
                 </Modal>
             }
         </div>

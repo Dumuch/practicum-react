@@ -6,7 +6,7 @@ interface IngredientModalProps {
     ingredient: IIngredient
 }
 
-const IngredientModal: FC<IngredientModalProps> = ({ ingredient }) => {
+const IngredientDetails: FC<IngredientModalProps> = ({ ingredient }) => {
     return (
         <div>
             <div className={'pb-10'}>
@@ -44,4 +44,4 @@ const IngredientModal: FC<IngredientModalProps> = ({ ingredient }) => {
     );
 };
 
-export default IngredientModal;
+export default IngredientDetails;

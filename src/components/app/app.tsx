@@ -4,7 +4,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import { IIngredient } from '../../models/common';
-import { API } from '../../constants';
+import { getIngredients } from '../../utils/burger-api';
 
 function App() {
     const [ingredients, setIngredients] = useState<IIngredient[]>([])
@@ -13,40 +13,27 @@ function App() {
 
     useEffect(() => {
         setLoading(true)
-        fetch(API.ingredients).then(r => r.json()).catch(e => {
-            setError('Сервер не доступен')
-        }).then(({ data, success }) => {
-            if (success) {
-                setIngredients(data)
-            } else {
-                setError('Сервер не доступен')
-            }
-        }).finally(() =>{
+
+        getIngredients().then(setIngredients).catch(setError).finally(() => {
             setLoading(false)
         })
     }, []);
-
 
     return (
         <div className={`${styles.app} d-flex flex-column`}>
             <AppHeader />
             <main className={`${styles.container} container d-flex justify-between`}>
-                {loading ? (
-                    <p>Загрузка ингредиентов...</p>
-                ) : (
+
+                {loading && (<p>Загрузка ингредиентов...</p>)}
+                {error && (<p>{error}</p>)}
+                {!!ingredients.length && (
                     <>
-                        {error ? (
-                            <p>{error}</p>
-                        ) : (
-                            <>
-                                <div className={`${styles.column} mr-10`}>
-                                    <BurgerIngredients ingredients={ingredients} />
-                                </div>
-                                <div className={styles.column}>
-                                    <BurgerConstructor ingredients={ingredients} />
-                                </div>
-                            </>
-                        )}
+                        <div className={`${styles.column} mr-10`}>
+                            <BurgerIngredients ingredients={ingredients} />
+                        </div>
+                        <div className={styles.column}>
+                            <BurgerConstructor ingredients={ingredients} />
+                        </div>
                     </>
                 )}
             </main>

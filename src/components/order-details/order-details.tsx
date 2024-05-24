@@ -2,7 +2,7 @@ import React from 'react';
 import img from '../../images/img.jpg'
 import styles from './styles.module.css'
 
-const OrderModal = () => {
+const OrderDetails = () => {
     return (
         <div className={'mt-20 d-flex flex-column align-items-center mb-20'}>
             <p className={`${styles.orderNumber} text text_type_digits-large mb-8`}>0232322</p>
@@ -14,4 +14,4 @@ const OrderModal = () => {
     );
 };
 
-export default OrderModal;
+export default OrderDetails;

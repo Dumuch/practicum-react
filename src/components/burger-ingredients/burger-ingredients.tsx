@@ -4,7 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import { IIngredient } from '../../models/common';
 import Modal from '../modal/modal';
-import IngredientModal from '../ingredient-modal/ingredient-modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 import { groupIngredients } from '../../helpers';
 
 
@@ -79,7 +79,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
 
                 </ul>
             </div>
-            {modal && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientModal
+            {modal && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientDetails
                 ingredient={modal} /></Modal>)}
         </section>
 
