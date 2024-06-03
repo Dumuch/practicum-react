@@ -1,0 +1,31 @@
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background);
+    border-radius: 20px;
+    z-index: 1;
+}
+
+.closeButton {
+    padding: 0;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+}
+
+.closeButtonWithTitle {
+    position: relative;
+    top: 2px;
+    right: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -11,6 +11,7 @@
 
 .list li {
     flex-basis: calc(50% - 12px);
+    cursor: pointer;
 }
 
 .wrapperIngredients {

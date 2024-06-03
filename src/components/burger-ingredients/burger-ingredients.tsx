@@ -1,18 +1,32 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import styles from './styles.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import { IIngredient } from '../../models/common';
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import { groupIngredients } from '../../helpers';
 
 
 interface BurgerIngredientsProps {
-    buns: IIngredient[]
-    mains: IIngredient[]
-    sauces: IIngredient[]
+    ingredients: IIngredient[]
 }
 
-const BurgerIngredients: FC<BurgerIngredientsProps> = ({buns, mains, sauces}) => {
+const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
     const [current, setCurrent] = React.useState('one')
+    const [modal, setModal] = useState<IIngredient | null>(null)
+
+    const { buns, sauces, mains } = useMemo(() => {
+        return groupIngredients(ingredients)
+    }, [ingredients])
+
+    const openModal = (ingredient: IIngredient) => () => {
+        setModal(ingredient)
+    }
+
+    const closeModal = () => {
+        setModal(null)
+    }
 
     return (
         <section className={styles.wrapperBurgerConstructor}>
@@ -33,7 +47,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({buns, mains, sauces}) =>
                 <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
                     {buns.map(ingredient => {
                         return (
-                            <li key={ingredient._id}>
+                            <li key={ingredient._id} onClick={openModal(ingredient)}>
                                 <IngredientCard ingredient={ingredient} />
                             </li>
                         )
@@ -44,7 +58,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({buns, mains, sauces}) =>
                 <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
                     {sauces.map(ingredient => {
                         return (
-                            <li key={ingredient._id}>
+                            <li key={ingredient._id} onClick={openModal(ingredient)}>
                                 <IngredientCard ingredient={ingredient} />
                             </li>
                         )
@@ -57,7 +71,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({buns, mains, sauces}) =>
                 <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
                     {mains.map(ingredient => {
                         return (
-                            <li key={ingredient._id}>
+                            <li key={ingredient._id} onClick={openModal(ingredient)}>
                                 <IngredientCard ingredient={ingredient} />
                             </li>
                         )
@@ -65,10 +79,12 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({buns, mains, sauces}) =>
 
                 </ul>
             </div>
+            {modal && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientDetails
+                ingredient={modal} /></Modal>)}
         </section>
 
+
     )
-        ;
-};
+}
 
 export default BurgerIngredients;

@@ -1,20 +1,19 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
-import { IIngredient } from '../../models/common';
+import OrderDetails from '../order-details/order-details';
+import Modal from '../modal/modal';
 
 interface SubmitOrderProps {
-    applyIngredients: IIngredient[]
-    applyBun: IIngredient
+    price: number
 }
 
-const SubmitOrder: FC<SubmitOrderProps> = ({ applyIngredients, applyBun }) => {
-    const price = useMemo(() => {
-        return (
-            (applyBun ? applyBun.price * 2 : 0) +
-            applyIngredients.reduce((acc, item) => acc + item.price, 0)
-        );
-    }, [applyBun, applyIngredients]);
+const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
+    const [modal, setModal] = useState(false)
+
+    const toggleModal = () => {
+        setModal(prev => !prev)
+    }
 
     return (
         <div className="d-flex align-items-center justify-end mt-10">
@@ -23,10 +22,14 @@ const SubmitOrder: FC<SubmitOrderProps> = ({ applyIngredients, applyBun }) => {
                 <CurrencyIcon type="primary" />
             </div>
 
-            <Button htmlType="button" type="primary" size="large">
+            <Button htmlType="button" type="primary" size="large" onClick={toggleModal}>
                 Оформить заказ
             </Button>
-
+            {modal &&
+                <Modal onClose={toggleModal}>
+                    <OrderDetails />
+                </Modal>
+            }
         </div>
     );
 };
