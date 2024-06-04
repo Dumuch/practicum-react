@@ -3,31 +3,44 @@ import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burg
 import styles from './styles.module.css'
 import { IIngredient } from '../../models/common';
 import SubmitOrder from '../submit-order/submit-order';
-import { groupIngredients, randomInt } from '../../helpers';
+import { useDrop } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../services';
+import { addIngredient, removeIngredient, setApplyBun } from '../../services/common';
 
 interface BurgerConstructorProps {
     ingredients: IIngredient[]
 }
 
 
-const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) => {
-    const { buns, sauces, mains } = useMemo(() => {
-        return groupIngredients(ingredients)
-    }, [ingredients])
-
-    const applyIngredients = mains.slice(randomInt(1, mains.length - 1), randomInt(1, mains.length - 1)).concat(sauces.slice(randomInt(1, sauces.length - 1), randomInt(1, sauces.length - 1)))
-    const applyBun: IIngredient | undefined = buns[randomInt(0, buns.length - 1)]
+const BurgerConstructor: FC<BurgerConstructorProps> = () => {
+    const { applyIngredients, applyBun } = useSelector((state: RootState) => state.commonStore)
+    const dispatch = useDispatch<AppDispatch>()
 
     const price = useMemo(() => {
         return (
             (applyBun ? applyBun.price * 2 : 0) +
-            applyIngredients.reduce((acc, item) => acc + item.price, 0)
+            applyIngredients.reduce((acc, { data }) => acc + data.price, 0)
         );
     }, [applyBun, applyIngredients]);
 
+    const onDropHandler = (ingredient: IIngredient) => {
+        if (ingredient.type === 'bun') {
+            dispatch(setApplyBun(ingredient))
+        } else {
+            dispatch(addIngredient(ingredient))
+        }
+    }
+
+    const [, dropTarget] = useDrop({
+        accept: 'ingredient',
+        drop(ingredient: IIngredient) {
+            onDropHandler(ingredient);
+        },
+    });
 
     return (
-        <div className={`${styles.wrapperBurgerIngredients} mt-25`}>
+        <div ref={dropTarget} className={`${styles.wrapperBurgerIngredients} mt-25`}>
             {applyBun &&
                 <div className="pl-8 mb-4">
                     <ConstructorElement
@@ -40,9 +53,12 @@ const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) => {
                 </div>
             }
             <ul className={`${styles.list} list`}>
-                {applyIngredients.map(ingredient => {
+                {applyIngredients.map(({ id, data: ingredient }) => {
+                    const handleClose = () =>{
+                        dispatch(removeIngredient(id))
+                    }
                     return (
-                        <li key={ingredient._id} className="pl-8 mb-4 position-relative">
+                        <li key={id} className="pl-8 mb-4 position-relative">
                             <div className={styles.dragButton}>
                                 <DragIcon type="primary" />
                             </div>
@@ -51,6 +67,7 @@ const BurgerConstructor: FC<BurgerConstructorProps> = ({ ingredients }) => {
                                 text={ingredient.name}
                                 price={ingredient.price}
                                 thumbnail={ingredient.image}
+                                handleClose={handleClose}
                             />
                         </li>
                     )

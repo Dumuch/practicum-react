@@ -1,4 +1,4 @@
-import React, { FC, LegacyRef, UIEventHandler, useCallback, useMemo, useRef, useState } from 'react';
+import React, { FC, useCallback, useMemo, useRef } from 'react';
 import styles from './styles.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
@@ -26,6 +26,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
     const oneTabRef = useRef<HTMLHeadingElement | null >(null)
     const twoTabRef = useRef<HTMLHeadingElement | null >(null)
     const threeTabRef = useRef<HTMLHeadingElement | null >(null)
+
 
     const { buns, sauces, mains } = useMemo(() => {
         return groupIngredients(ingredients)

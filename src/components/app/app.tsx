@@ -6,6 +6,8 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchIngredients } from '../../services/ingredients';
 import { AppDispatch, RootState } from '../../services';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
     const [error, setError] = useState<string | null>(null)
@@ -30,14 +32,14 @@ function App() {
                 {loading && (<p>Загрузка ингредиентов...</p>)}
                 {error && (<p>{error}</p>)}
                 {!!ingredients.length && (
-                    <>
+                    <DndProvider backend={HTML5Backend}>
                         <div className={`${styles.column} mr-10`}>
                             <BurgerIngredients ingredients={ingredients} />
                         </div>
                         <div className={styles.column}>
                             <BurgerConstructor ingredients={ingredients} />
                         </div>
-                    </>
+                    </DndProvider>
                 )}
             </main>
 
