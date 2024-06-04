@@ -3,18 +3,21 @@ import styles from './styles.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import { IIngredient } from '../../models/common';
-import { getIngredients } from '../../utils/burger-api';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchIngredients } from '../../services/ingredients';
+import { AppDispatch, RootState } from '../../services';
 
 function App() {
-    const [ingredients, setIngredients] = useState<IIngredient[]>([])
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
+
+    const {ingredients} = useSelector((state: RootState) => state.ingredients)
+    const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
         setLoading(true)
 
-        getIngredients().then(setIngredients).catch(setError).finally(() => {
+        dispatch(fetchIngredients()).catch(setError).finally(() =>{
             setLoading(false)
         })
     }, []);
