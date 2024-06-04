@@ -1,12 +1,13 @@
 import React, { FC, useMemo } from 'react';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
 import { IIngredient } from '../../models/common';
 import SubmitOrder from '../submit-order/submit-order';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../services';
-import { addIngredient, removeIngredient, setApplyBun } from '../../services/common';
+import { addIngredient, setApplyBun } from '../../services/common';
+import BurgerConstructorIngredient from '../burger-constructor-ingredient/burger-constructor-ingredient';
 
 interface BurgerConstructorProps {
     ingredients: IIngredient[]
@@ -39,6 +40,7 @@ const BurgerConstructor: FC<BurgerConstructorProps> = () => {
         },
     });
 
+
     return (
         <div ref={dropTarget} className={`${styles.wrapperBurgerIngredients} mt-25`}>
             {applyBun &&
@@ -53,22 +55,11 @@ const BurgerConstructor: FC<BurgerConstructorProps> = () => {
                 </div>
             }
             <ul className={`${styles.list} list`}>
-                {applyIngredients.map(({ id, data: ingredient }) => {
-                    const handleClose = () =>{
-                        dispatch(removeIngredient(id))
-                    }
+                {applyIngredients.map(({ id, data: ingredient }, index) => {
+
                     return (
                         <li key={id} className="pl-8 mb-4 position-relative">
-                            <div className={styles.dragButton}>
-                                <DragIcon type="primary" />
-                            </div>
-                            <ConstructorElement
-                                isLocked={false}
-                                text={ingredient.name}
-                                price={ingredient.price}
-                                thumbnail={ingredient.image}
-                                handleClose={handleClose}
-                            />
+                            <BurgerConstructorIngredient key={id} ingredient={ingredient} id={id} index={index} />
                         </li>
                     )
                 })}

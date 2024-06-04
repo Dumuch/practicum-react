@@ -21,7 +21,7 @@ const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
         const ids = applyIngredients.map(ingredient => ingredient.data._id)
         if (applyBun) {
             ids.push(applyBun._id)
-            ids.push(applyBun._id)
+            ids.unshift(applyBun._id)
         }
         dispatch(createOrder(ids))
     }
