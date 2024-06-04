@@ -32,7 +32,4 @@ export const ingredientsSlice = createSlice({
     },
 })
 
-export const {} = ingredientsSlice.actions
-
-
 export default ingredientsSlice.reducer

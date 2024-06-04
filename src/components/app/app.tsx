@@ -22,7 +22,7 @@ function App() {
         dispatch(fetchIngredients()).catch(setError).finally(() =>{
             setLoading(false)
         })
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className={`${styles.app} d-flex flex-column`}>

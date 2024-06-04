@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
 import OrderDetails from '../order-details/order-details';

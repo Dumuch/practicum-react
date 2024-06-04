@@ -30,7 +30,7 @@ const BurgerConstructorIngredient: FC<BurgerConstructorIngredientProps> = ({ id,
 
     const ref = useRef<HTMLDivElement>(null)
 
-    const [_, drop] = useDrop<
+    const useDropProps = useDrop<
         DragItem,
         void,
         { handlerId: Identifier | null }
@@ -84,7 +84,7 @@ const BurgerConstructorIngredient: FC<BurgerConstructorIngredientProps> = ({ id,
         }),
     })
 
-    drag(drop(ref))
+    drag(useDropProps[1](ref))
 
     return (
         <div ref={ref}>

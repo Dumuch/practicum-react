@@ -23,8 +23,11 @@ const IngredientCard: FC<IngredientCardProps> = ({ ingredient }) => {
 
     const count = useMemo(() => {
         const countFromApplyIngredients = applyIngredients.filter(({ data: applyIngredient }) => applyIngredient._id === ingredient._id).length
-        return countFromApplyIngredients > 0 ? countFromApplyIngredients : (applyBun?._id === ingredient._id ? 1 : 0)
-    }, [applyIngredients, applyBun])
+        if (applyBun?._id === ingredient._id) {
+            return 1
+        }
+        return countFromApplyIngredients > 0 ? countFromApplyIngredients : 0
+    }, [applyIngredients, applyBun, ingredient])
 
     return (
         <div className={`pb-10 ${isDrag && styles.draggable}`} ref={dragRef}>
