@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, nanoid } from '@reduxjs/toolkit'
 import { IIngredient } from '../models/common';
 import { arrayMove } from '../helpers';
 
 export interface CommonState {
-    applyIngredients: {id: number, data:IIngredient}[]
+    applyIngredients: { id: string, data: IIngredient }[]
     applyBun: IIngredient | null
     currentIngredient: IIngredient | null
     order: {}
@@ -19,30 +19,39 @@ const initialState: CommonState = {
 export const commonSlice = createSlice({
     name: 'common',
     initialState,
-    reducers: {
-        setCurrentIngredient: (state, action: PayloadAction<IIngredient | null>) =>{
+    reducers: (create) => ({
+        setCurrentIngredient: create.reducer<IIngredient | null>((state, action) => {
             state.currentIngredient = action.payload
-        },
-        addIngredient:(state, action: PayloadAction<IIngredient>) =>{
-            const newIngredients = [...state.applyIngredients]
-            newIngredients.push({
-                id: new Date().getTime(),
-                data: action.payload
-            })
-            state.applyIngredients = newIngredients
-        },
-        setApplyBun:(state, action: PayloadAction<IIngredient>) =>{
+        }),
+        addIngredient: create.preparedReducer(
+            (ingredient: IIngredient) => {
+                const id = nanoid()
+                return { payload: { id, data: ingredient } }
+            },
+            (state, action) => {
+                const newIngredients = [...state.applyIngredients]
+                newIngredients.push(action.payload)
+                state.applyIngredients = newIngredients
+            }
+        ),
+        setApplyBun: create.reducer<IIngredient>((state, action) => {
             state.applyBun = action.payload
-        },
-        removeIngredient:(state, action: PayloadAction<number>) => {
+        }),
+        removeIngredient: create.reducer<string>((state, action) => {
             state.applyIngredients = state.applyIngredients.filter(applyIngredient => applyIngredient.id !== action.payload)
-        },
-         sortApplyIngredients: (state, action: PayloadAction<{dragIndex: number, hoverIndex: number}>) =>{
-             state.applyIngredients = arrayMove(state.applyIngredients, action.payload.dragIndex, action.payload.hoverIndex)
-         }
-    },
+        }),
+        sortApplyIngredients: create.reducer<{ dragIndex: number, hoverIndex: number }>((state, action) => {
+            state.applyIngredients = arrayMove(state.applyIngredients, action.payload.dragIndex, action.payload.hoverIndex)
+        })
+    }),
 })
 
-export const { sortApplyIngredients, addIngredient, setCurrentIngredient, setApplyBun, removeIngredient} = commonSlice.actions
+export const {
+    sortApplyIngredients,
+    addIngredient,
+    setCurrentIngredient,
+    setApplyBun,
+    removeIngredient
+} = commonSlice.actions
 
 export default commonSlice.reducer

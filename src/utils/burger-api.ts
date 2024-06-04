@@ -1,16 +1,14 @@
 import { API } from '../constants';
-import { checkResponse } from '../helpers';
+import { request } from '../helpers';
 
 export const getIngredients = async () => {
-    return fetch(API.ingredients)
-        .then(checkResponse).then(({ data }) => data)
+    return request(API.ingredients).then(({ data }) => data)
 }
 
 export const submitOrder = async (values: object) => {
-    return fetch(API.orders, {
+    return request(API.orders, {
         method: 'POST',
         body: values ? JSON.stringify(values) : undefined,
         headers: { 'Content-Type': 'application/json', accept: 'application/json' }
-    })
-        .then(checkResponse).then((data) => data)
+    }).then((data) => data)
 }

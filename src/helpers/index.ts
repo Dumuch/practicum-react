@@ -45,3 +45,7 @@ export const arrayMove = (arr: any[], old_index: number, new_index: number) => {
     newArr.splice(new_index, 0, newArr.splice(old_index, 1)[0]);
     return newArr;
 };
+
+export const request = (url: string, options?: RequestInit) => {
+    return fetch(url, options).then(checkResponse)
+}

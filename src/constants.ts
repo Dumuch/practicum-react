@@ -1,4 +1,5 @@
+const BASE_URL = 'https://norma.nomoreparties.space/api'
 export const API = {
-    ingredients: 'https://norma.nomoreparties.space/api/ingredients',
-    orders: 'https://norma.nomoreparties.space/api/orders'
+    ingredients: BASE_URL + '/ingredients',
+    orders: BASE_URL + '/orders'
 }

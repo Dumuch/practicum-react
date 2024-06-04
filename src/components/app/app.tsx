@@ -10,16 +10,15 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function App() {
-    const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
 
-    const {ingredients} = useSelector((state: RootState) => state.ingredientsStore)
+    const {ingredients, error} = useSelector((state: RootState) => state.ingredientsStore)
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
         setLoading(true)
 
-        dispatch(fetchIngredients()).catch(setError).finally(() =>{
+        dispatch(fetchIngredients()).finally(() =>{
             setLoading(false)
         })
     }, [dispatch]);

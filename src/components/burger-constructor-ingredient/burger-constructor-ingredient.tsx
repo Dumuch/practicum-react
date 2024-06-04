@@ -10,7 +10,7 @@ import type { Identifier, XYCoord } from 'dnd-core'
 
 interface BurgerConstructorIngredientProps {
     ingredient: IIngredient
-    id: number
+    id: string
     index: number
 }
 
