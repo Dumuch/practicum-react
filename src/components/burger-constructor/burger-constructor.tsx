@@ -43,40 +43,47 @@ const BurgerConstructor: FC<BurgerConstructorProps> = () => {
 
     return (
         <div ref={dropTarget} className={`${styles.wrapperBurgerIngredients} mt-25`}>
-            {applyBun &&
-                <div className="pl-8 mb-4">
-                    <ConstructorElement
-                        type="top"
-                        isLocked={true}
-                        text={applyBun.name + ' (верх)'}
-                        price={applyBun.price}
-                        thumbnail={applyBun.image}
-                    />
-                </div>
-            }
-            <ul className={`${styles.list} list`}>
-                {applyIngredients.map(({ id, data: ingredient }, index) => {
+            {price === 0 ? (
+                <p className={'text text_type_main-medium'}>Добавьте свои ингредиенты</p>
+            ) : (
+                <>
+                    {applyBun &&
+                        <div className="pl-8 mb-4">
+                            <ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text={applyBun.name + ' (верх)'}
+                                price={applyBun.price}
+                                thumbnail={applyBun.image}
+                            />
+                        </div>
+                    }
+                    <ul className={`${styles.list} list`}>
+                        {applyIngredients.map(({ id, data: ingredient }, index) => {
 
-                    return (
-                        <li key={id} className="pl-8 mb-4 position-relative">
-                            <BurgerConstructorIngredient key={id} ingredient={ingredient} id={id} index={index} />
-                        </li>
-                    )
-                })}
+                            return (
+                                <li key={id} className="pl-8 mb-4 position-relative">
+                                    <BurgerConstructorIngredient key={id} ingredient={ingredient} id={id}
+                                                                 index={index} />
+                                </li>
+                            )
+                        })}
 
 
-            </ul>
-            {applyBun &&
-                <div className="pl-8 mt-4 mb-4">
-                    <ConstructorElement
-                        type="bottom"
-                        isLocked={true}
-                        text={applyBun.name + ' (низ)'}
-                        price={applyBun.price}
-                        thumbnail={applyBun.image}
-                    />
-                </div>
-            }
+                    </ul>
+                    {applyBun &&
+                        <div className="pl-8 mt-4 mb-4">
+                            <ConstructorElement
+                                type="bottom"
+                                isLocked={true}
+                                text={applyBun.name + ' (низ)'}
+                                price={applyBun.price}
+                                thumbnail={applyBun.image}
+                            />
+                        </div>
+                    }
+                </>
+            )}
 
             <SubmitOrder price={price} />
         </div>
