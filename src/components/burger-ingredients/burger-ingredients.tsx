@@ -6,6 +6,9 @@ import { IIngredient } from '../../models/common';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { groupIngredients } from '../../helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../services';
+import { setCurrentIngredient } from '../../services/common';
 
 
 interface BurgerIngredientsProps {
@@ -14,18 +17,21 @@ interface BurgerIngredientsProps {
 
 const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
     const [current, setCurrent] = React.useState('one')
-    const [modal, setModal] = useState<IIngredient | null>(null)
+
+    const {currentIngredient} = useSelector((state: RootState) => state.commonStore)
+    const dispatch = useDispatch<AppDispatch>()
 
     const { buns, sauces, mains } = useMemo(() => {
         return groupIngredients(ingredients)
     }, [ingredients])
 
     const openModal = (ingredient: IIngredient) => () => {
-        setModal(ingredient)
+        dispatch(setCurrentIngredient(ingredient))
     }
 
     const closeModal = () => {
-        setModal(null)
+        dispatch(setCurrentIngredient(null))
+
     }
 
     return (
@@ -79,8 +85,8 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
 
                 </ul>
             </div>
-            {modal && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientDetails
-                ingredient={modal} /></Modal>)}
+            {currentIngredient && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientDetails
+                ingredient={currentIngredient} /></Modal>)}
         </section>
 
 

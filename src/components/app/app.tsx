@@ -11,7 +11,7 @@ function App() {
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
 
-    const {ingredients} = useSelector((state: RootState) => state.ingredients)
+    const {ingredients} = useSelector((state: RootState) => state.ingredientsStore)
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {

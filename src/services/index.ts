@@ -4,8 +4,8 @@ import ingredientsReducer from './ingredients';
 
 export const store = configureStore({
     reducer: {
-        common: commonReducer,
-        ingredients: ingredientsReducer
+        commonStore: commonReducer,
+        ingredientsStore: ingredientsReducer
     },
 })
 
