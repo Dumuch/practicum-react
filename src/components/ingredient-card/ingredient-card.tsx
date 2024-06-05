@@ -1,17 +1,41 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styles from './styles.module.css'
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IIngredient } from '../../models/common';
+import { useDrag } from 'react-dnd';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../services';
 
 interface IngredientCardProps {
     ingredient: IIngredient
 }
 
 const IngredientCard: FC<IngredientCardProps> = ({ ingredient }) => {
+    const { applyIngredients, applyBun } = useSelector((state: RootState) => state.commonStore)
+    const [{ isDrag }, dragRef] = useDrag({
+        type: 'ingredient',
+        item: ingredient,
+        collect: monitor => ({
+            isDrag: monitor.isDragging()
+        })
+    });
+
+
+    const count = useMemo(() => {
+        const countFromApplyIngredients = applyIngredients.filter(({ data: applyIngredient }) => applyIngredient._id === ingredient._id).length
+        if (applyBun?._id === ingredient._id) {
+            return 1
+        }
+        return countFromApplyIngredients > 0 ? countFromApplyIngredients : 0
+    }, [applyIngredients, applyBun, ingredient])
+
     return (
-        <div className={'pb-10'}>
+        <div className={`pb-10 ${isDrag && styles.draggable}`} ref={dragRef}>
             <div className={'d-flex justify-center pl-4 pr-4 position-relative'}>
-                {/*<Counter count={1} size="default" extraClass="m-1" />*/}
+                {count > 0 && (
+                    <Counter count={count} size="default" extraClass="m-1" />
+
+                )}
                 <img src={ingredient.image} alt="" />
             </div>
 

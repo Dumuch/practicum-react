@@ -9,7 +9,7 @@ interface LinkProps {
 
 const Link: FC<LinkProps> = ({ icon, title, disabled  = false}) => {
     return (
-        <a href={'#'} className={`${styles.link} d-flex justify-between pl-5 pr-5 pt-4 pb-4 mr-2`}>
+        <a href={'/'} className={`${styles.link} d-flex justify-between pl-5 pr-5 pt-4 pb-4 mr-2`}>
             {icon && (
                 <div className="pr-2">
                     {icon}

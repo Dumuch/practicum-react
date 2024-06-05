@@ -27,3 +27,25 @@ export const groupIngredients = (ingredients: IIngredient[]) => {
 export const checkResponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
+
+export const arrayMove = (arr: any[], old_index: number, new_index: number) => {
+    const newArr = [...arr]
+    while (old_index < 0) {
+        old_index += newArr.length;
+    }
+    while (new_index < 0) {
+        new_index += newArr.length;
+    }
+    if (new_index >= newArr.length) {
+        let k = new_index - newArr.length + 1;
+        while (k--) {
+            newArr.push(undefined);
+        }
+    }
+    newArr.splice(new_index, 0, newArr.splice(old_index, 1)[0]);
+    return newArr;
+};
+
+export const request = (url: string, options?: RequestInit) => {
+    return fetch(url, options).then(checkResponse)
+}

@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useRef } from 'react';
 import styles from './styles.module.css'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
@@ -6,27 +6,51 @@ import { IIngredient } from '../../models/common';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { groupIngredients } from '../../helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../services';
+import { setCurrentIngredient } from '../../services/common';
 
 
 interface BurgerIngredientsProps {
     ingredients: IIngredient[]
 }
 
+const OFFSET_Y = 40
+
 const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
     const [current, setCurrent] = React.useState('one')
-    const [modal, setModal] = useState<IIngredient | null>(null)
+
+    const {currentIngredient} = useSelector((state: RootState) => state.commonStore)
+    const dispatch = useDispatch<AppDispatch>()
+
+    const oneTabRef = useRef<HTMLHeadingElement | null >(null)
+    const twoTabRef = useRef<HTMLHeadingElement | null >(null)
+    const threeTabRef = useRef<HTMLHeadingElement | null >(null)
+
 
     const { buns, sauces, mains } = useMemo(() => {
         return groupIngredients(ingredients)
     }, [ingredients])
 
     const openModal = (ingredient: IIngredient) => () => {
-        setModal(ingredient)
+        dispatch(setCurrentIngredient(ingredient))
     }
 
     const closeModal = () => {
-        setModal(null)
+        dispatch(setCurrentIngredient(null))
     }
+
+    const scrollHandler = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+        const pageY = e.currentTarget.getBoundingClientRect().top
+
+        if(pageY > (threeTabRef.current?.getBoundingClientRect().top ?? 0) - OFFSET_Y) {
+            setCurrent('three')
+        } else if(pageY > (twoTabRef.current?.getBoundingClientRect().top ?? 0) - OFFSET_Y){
+            setCurrent('two')
+        } else {
+            setCurrent('one')
+        }
+    },[])
 
     return (
         <section className={styles.wrapperBurgerConstructor}>
@@ -42,8 +66,8 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
                     Начинки
                 </Tab>
             </div>
-            <div className={styles.wrapperIngredients}>
-                <h3 className={'text text_type_main-medium'}>Булки</h3>
+            <div className={styles.wrapperIngredients} onScroll={scrollHandler}>
+                <h3 className={'text text_type_main-medium'} ref={oneTabRef}>Булки</h3>
                 <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
                     {buns.map(ingredient => {
                         return (
@@ -54,7 +78,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
                     })}
                 </ul>
 
-                <h3 className={'text text_type_main-medium'}>Соусы</h3>
+                <h3 className={'text text_type_main-medium'} ref={twoTabRef}>Соусы</h3>
                 <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
                     {sauces.map(ingredient => {
                         return (
@@ -67,7 +91,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
                 </ul>
 
 
-                <h3 className={'text text_type_main-medium'}>Начинки</h3>
+                <h3 className={'text text_type_main-medium'} ref={threeTabRef}>Начинки</h3>
                 <ul className={`${styles.list} d-flex flex-wrap mb-10 mt-6 pl-4 pr-4`}>
                     {mains.map(ingredient => {
                         return (
@@ -79,8 +103,8 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({ ingredients }) => {
 
                 </ul>
             </div>
-            {modal && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientDetails
-                ingredient={modal} /></Modal>)}
+            {currentIngredient && (<Modal onClose={closeModal} title={'Детали ингредиента'}><IngredientDetails
+                ingredient={currentIngredient} /></Modal>)}
         </section>
 
 
