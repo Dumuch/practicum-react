@@ -7,11 +7,12 @@ interface LinkProps {
     title: string
     disabled?: boolean
     href: string
+    classname?: string
 }
 
-const Link: FC<LinkProps> = ({icon, title, disabled = false, href}) => {
+const Link: FC<LinkProps> = ({classname, icon, title, disabled = false, href}) => {
     return (
-        <RouteLink to={href} className={`${styles.link} d-flex justify-between pl-5 pr-5 pt-4 pb-4 mr-2`}>
+        <RouteLink to={href} className={`${styles.link} d-flex justify-between ${classname}`}>
             {icon && (
                 <div className="pr-2">
                     {icon}
