@@ -1,48 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import styles from './styles.module.css';
-import AppHeader from '../app-header/app-header';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchIngredients } from '../../services/ingredients';
-import { AppDispatch, RootState } from '../../services';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import React from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {
+    LoginPage,
+    MainPage,
+    RegisterPage,
+    ForgotPasswordPage,
+    ResetPasswordPage,
+    ProfilePage,
+    IngredientsPage,
+    NotFound404Page,
+    routes
+} from "../../pages";
 
 function App() {
-    const [loading, setLoading] = useState(false)
-
-    const {ingredients, error} = useSelector((state: RootState) => state.ingredientsStore)
-    const dispatch = useDispatch<AppDispatch>()
-
-    useEffect(() => {
-        setLoading(true)
-
-        dispatch(fetchIngredients()).finally(() =>{
-            setLoading(false)
-        })
-    }, [dispatch]);
 
     return (
-        <div className={`${styles.app} d-flex flex-column`}>
-            <AppHeader />
-            <main className={`${styles.container} container d-flex justify-between`}>
-
-                {loading && (<p>Загрузка ингредиентов...</p>)}
-                {error && (<p>{error}</p>)}
-                {!!ingredients.length && (
-                    <DndProvider backend={HTML5Backend}>
-                        <div className={`${styles.column} mr-10`}>
-                            <BurgerIngredients ingredients={ingredients} />
-                        </div>
-                        <div className={styles.column}>
-                            <BurgerConstructor ingredients={ingredients} />
-                        </div>
-                    </DndProvider>
-                )}
-            </main>
-
-        </div>
+        <Router>
+            <Routes>
+                <Route path={routes.main} element={<MainPage/>}/>
+                <Route path={routes.login} element={<LoginPage/>}/>
+                <Route path={routes.register} element={<RegisterPage/>}/>
+                <Route path={routes.forgotPassword} element={<ForgotPasswordPage/>}/>
+                <Route path={routes.resetPassword} element={<ResetPasswordPage/>}/>
+                <Route path={routes.profile.main} element={<ProfilePage/>}>
+                    <Route path={routes.profile.orders} element={<ProfilePage/>}/>
+                </Route>
+                <Route path={`${routes.ingredients}/:id`} element={<IngredientsPage/>}/>
+                <Route path="*" element={<NotFound404Page/>}/>
+            </Routes>
+        </Router>
     );
 }
 
