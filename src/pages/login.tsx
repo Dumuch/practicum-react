@@ -45,8 +45,8 @@ const Login = () => {
                                                     href={routes.register}/></p>
                     <p className={'text text_type_main-default text-align-center text_color_inactive d-flex justify-center'}>Забыли
                         пароль? <Link classname={'ml-2 link'} title={'Восстановить пароль'}
-                                      href={routes.resetPassword}/></p>
-                    
+                                      href={routes.forgotPassword}/></p>
+
                 </div>
             </main>
 
