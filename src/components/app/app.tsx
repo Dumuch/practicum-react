@@ -22,7 +22,9 @@ function App() {
                 <Route path={routes.register} element={<RegisterPage/>}/>
                 <Route path={routes.forgotPassword} element={<ForgotPasswordPage/>}/>
                 <Route path={routes.resetPassword} element={<ResetPasswordPage/>}/>
-                <Route path={routes.profile} element={<ProfilePage/>}/>
+                <Route path={routes.profile.main} element={<ProfilePage/>}>
+                    <Route path={routes.profile.orders} element={<ProfilePage/>}/>
+                </Route>
                 <Route path={`${routes.ingredients}/:id`} element={<IngredientsPage/>}/>
                 <Route path="*" element={<NotFound404Page/>}/>
             </Routes>

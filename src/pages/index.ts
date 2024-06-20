@@ -13,6 +13,9 @@ export const routes = {
     register: '/register',
     forgotPassword: '/forgot-password',
     resetPassword: '/reset-password',
-    profile: '/profile',
+    profile: {
+        main: '/profile',
+        orders: 'orders'
+    },
     ingredients: '/ingredients',
 }
