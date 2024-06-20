@@ -12,3 +12,29 @@ export const submitOrder = async (values: object) => {
         headers: { 'Content-Type': 'application/json', accept: 'application/json' }
     }).then((data) => data)
 }
+
+export const forgotPassword = async (email: string) => {
+    return request(API.passwordReset, {
+        method: 'POST',
+        body: JSON.stringify({email}),
+        headers: { 'Content-Type': 'application/json', accept: 'application/json' }
+    }).then((data) => data)
+}
+
+export const resetPassword = async (password: string, token: string) => {
+    return request(API.passwordReset + '/reset', {
+        method: 'POST',
+        body: JSON.stringify({password, token}),
+        headers: { 'Content-Type': 'application/json', accept: 'application/json' }
+    }).then((data) => data)
+}
+
+export const register = async (email: string, password: string, name: string) => {
+    return request(API.register, {
+        method: 'POST',
+        body: JSON.stringify({password, email, name}),
+        headers: { 'Content-Type': 'application/json', accept: 'application/json' }
+    }).then((data) => data)
+}
+
+

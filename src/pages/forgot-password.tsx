@@ -1,11 +1,27 @@
-import React from 'react';
+import React, {FormEvent, useState} from 'react';
 import styles from "../components/app/styles.module.css";
 import AppHeader from "../components/app-header/app-header";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import Link from "../components/link/link";
 import {routes} from "./index";
+import {forgotPassword} from "../utils/burger-api";
+import {useNavigate} from "react-router-dom";
 
 const ForgotPassword = () => {
+    const [email, setEmail] = useState('')
+    const navigate = useNavigate();
+
+    const onChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
+        setEmail(e.target.value)
+    }
+
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        try {
+            await forgotPassword(email)
+            navigate(routes.resetPassword)
+        } catch {}
+    }
     return (
         <div className={`${styles.app} d-flex flex-column`}>
             <AppHeader/>
@@ -14,13 +30,11 @@ const ForgotPassword = () => {
                 <div className="mt-a mb-a">
 
 
-                    <form className={'form mb-20'}>
+                    <form className={'form mb-20'} onSubmit={onSubmit}>
                         <p className={'text text_type_main-medium text-align-center'}>Восстановление пароля</p>
                         <Input
-                            value={''}
-                            onChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
-                                throw new Error('Function not implemented.');
-                            }}
+                            value={email}
+                            onChange={onChange}
                             name={'email'}
                             placeholder={'Укажите email'}
                             onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
