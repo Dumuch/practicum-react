@@ -7,7 +7,6 @@ import {
     ForgotPasswordPage,
     ResetPasswordPage,
     ProfilePage,
-    IngredientsPage,
     NotFound404Page,
     routes
 } from "../../pages";
@@ -22,7 +21,7 @@ function App() {
 
     useEffect(() => {
         dispatch(fetchUser())
-    }, []);
+    }, [dispatch]);
 
     return (
         <Router>
@@ -59,7 +58,7 @@ function App() {
                         </ProtectedRouteElement>
                     }/>
                 </Route>
-                <Route path={`${routes.ingredients}/:id`} element={<IngredientsPage/>}/>
+                <Route path={`${routes.ingredients}/:id`} element={<MainPage/>}/>
                 <Route path="*" element={<NotFound404Page/>}/>
             </Routes>
         </Router>

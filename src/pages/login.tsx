@@ -1,18 +1,18 @@
 import React, {FormEvent, useState} from 'react';
 import styles from "../components/app/styles.module.css";
 import AppHeader from "../components/app-header/app-header";
-import {Button, EmailInput, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import Link from "../components/link/link";
 import {routes} from "./index";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../services";
-import {loginUser, registerUser} from "../services/user";
+import {loginUser} from "../services/user";
 
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { error } = useSelector((state: RootState) => state.userStore)
+    const {error} = useSelector((state: RootState) => state.userStore)
 
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>()

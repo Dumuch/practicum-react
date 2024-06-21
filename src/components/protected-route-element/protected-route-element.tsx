@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useEffect, useState} from 'react';
+import React, {FC, ReactElement, useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../services";
 import {fetchUser, refreshUserToken} from "../../services/user";
@@ -16,7 +16,7 @@ const ProtectedRouteElement: FC<IProtectedRouteElementProps> = ({children}) => {
     const dispatch = useDispatch<AppDispatch>()
     const location = useLocation();
 
-    const init = async () => {
+    const init = useCallback(async () => {
         if (loading === 'succeeded') {
             setUserLoaded(true);
             return
@@ -29,11 +29,11 @@ const ProtectedRouteElement: FC<IProtectedRouteElementProps> = ({children}) => {
         } finally {
             setUserLoaded(true);
         }
-    };
+    }, [dispatch, loading]);
 
     useEffect(() => {
         init();
-    }, []);
+    }, [init]);
 
     if (!isUserLoaded) {
         return <></>;

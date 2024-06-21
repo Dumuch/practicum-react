@@ -8,9 +8,12 @@ import BurgerConstructor from "../components/burger-constructor/burger-construct
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../services";
 import {fetchIngredients} from "../services/ingredients";
+import {IngredientsPage, routes} from "./index";
+import {useLocation} from "react-router-dom";
 
 const Main = () => {
     const [loading, setLoading] = useState(false)
+    const location = useLocation();
 
     const {ingredients, error} = useSelector((state: RootState) => state.ingredientsStore)
     const dispatch = useDispatch<AppDispatch>()
@@ -18,31 +21,41 @@ const Main = () => {
     useEffect(() => {
         setLoading(true)
 
-        dispatch(fetchIngredients()).finally(() =>{
+        dispatch(fetchIngredients()).finally(() => {
             setLoading(false)
         })
     }, [dispatch]);
 
+    const isIngredientPage = location.pathname.includes(routes.ingredients);
+
     return (
-        <div className={`${styles.app} d-flex flex-column`}>
-            <AppHeader/>
-            <main className={`${styles.container} container d-flex justify-between`}>
+        <>
 
-                {loading && (<p>Загрузка ингредиентов...</p>)}
-                {error && (<p>{error}</p>)}
-                {!!ingredients.length && (
-                    <DndProvider backend={HTML5Backend}>
-                        <div className={`${styles.column} mr-10`}>
-                            <BurgerIngredients ingredients={ingredients}/>
-                        </div>
-                        <div className={styles.column}>
-                            <BurgerConstructor ingredients={ingredients}/>
-                        </div>
-                    </DndProvider>
-                )}
-            </main>
+            {isIngredientPage && !sessionStorage.getItem('openModalIngredient') ? (
+                <IngredientsPage/>
+            ) : (
+                <div className={`${styles.app} d-flex flex-column`}>
+                    <AppHeader/>
+                    <main className={`${styles.container} container d-flex justify-between`}>
 
-        </div>
+                        {loading && (<p>Загрузка ингредиентов...</p>)}
+                        {error && (<p>{error}</p>)}
+                        {!!ingredients.length && (
+                            <DndProvider backend={HTML5Backend}>
+                                <div className={`${styles.column} mr-10`}>
+                                    <BurgerIngredients ingredients={ingredients}/>
+                                </div>
+                                <div className={styles.column}>
+                                    <BurgerConstructor ingredients={ingredients}/>
+                                </div>
+                            </DndProvider>
+                        )}
+                    </main>
+
+                </div>
+            )}
+        </>
+
     );
 };
 
