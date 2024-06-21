@@ -1,6 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {ILoginReq, IRegisterReq, IUser} from '../models/common';
-import {getCurrentUser, login, logout, refreshToken, register, submitOrder} from '../utils/burger-api';
+import {ILoginReq, IRegisterReq, IUpdateUserReq, IUser} from '../models/common';
+import {
+    getCurrentUser,
+    login,
+    logout,
+    refreshToken,
+    register,
+    updateCurrentUser
+} from '../utils/burger-api';
 
 export interface UserState {
     user: IUser | null
@@ -21,6 +28,13 @@ export const fetchUser = createAsyncThunk(
     },
 )
 
+export const updateUser = createAsyncThunk(
+    'user/update',
+    async (values: IUpdateUserReq) => {
+        return await updateCurrentUser(values)
+    },
+)
+
 export const loginUser = createAsyncThunk(
     'user/login',
     async (values: ILoginReq) => {
@@ -35,7 +49,7 @@ export const registerUser = createAsyncThunk(
     },
 )
 
-export const refreshUserToken= createAsyncThunk(
+export const refreshUserToken = createAsyncThunk(
     'user/token',
     async () => {
         return await refreshToken()
@@ -51,9 +65,12 @@ export const logoutUser = createAsyncThunk(
 export const userSlice = createSlice({
     name: 'order',
     initialState,
-    reducers: {
-    },
+    reducers: {},
     extraReducers: (builder) => {
+        builder.addCase(updateUser.fulfilled, (state, action) => {
+            state.user = action.payload
+        })
+
         builder.addCase(logoutUser.pending, (state, action) => {
             state.error = null
             state.loading = 'pending'

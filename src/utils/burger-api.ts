@@ -1,6 +1,6 @@
 import {API} from '../constants';
 import {request} from '../helpers';
-import {ILoginReq, ILoginRes, IRegisterReq, IRegisterRes, IToken, IUser} from "../models/common";
+import {ILoginReq, ILoginRes, IRegisterReq, IRegisterRes, IToken, IUpdateUserReq, IUser} from "../models/common";
 
 export const getIngredients = async () => {
     return request(API.ingredients).then(({data}) => data)
@@ -47,7 +47,7 @@ export const login = async (values: ILoginReq): Promise<ILoginRes> => {
 }
 
 export const getCurrentUser = async (): Promise<IUser> => {
-    return request(API.currentUser, {headers: {authorization: sessionStorage.getItem('accessToken') ?? ''}}).then(({user}) => user)
+    return request(API.currentUser, {headers: {authorization: sessionStorage.getItem('accessToken') ?? ''}}).then((data) => data?.user || data)
 }
 
 export const refreshToken = async (): Promise<IToken> => {
@@ -64,5 +64,13 @@ export const logout = async () => {
         body: JSON.stringify({token: localStorage.getItem('refreshToken') ?? ''}),
         headers: {'Content-Type': 'application/json', accept: 'application/json'}
     }).then((data) => data)
+}
+
+export const updateCurrentUser = async (values: IUpdateUserReq): Promise<IUser> => {
+    return request(API.currentUser, {
+        method: 'PATCH',
+        body: JSON.stringify(values),
+        headers: {'Content-Type': 'application/json', accept: 'application/json', authorization: sessionStorage.getItem('accessToken') ?? ''}
+    }).then((data) => data?.user || data)
 }
 

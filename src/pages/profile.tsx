@@ -8,7 +8,7 @@ import {routes} from "./index";
 import stylesProfilePage from "./profile.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../services";
-import {logoutUser, registerUser} from "../services/user";
+import {logoutUser, registerUser, updateUser} from "../services/user";
 import {NavLink} from "react-router-dom";
 
 
@@ -30,6 +30,11 @@ const Profile = () => {
         try {
             // await dispatch(registerUser({email, name, password})).unwrap()
         } catch {}
+    }
+
+    const onUpdateUser = async () =>{
+        await dispatch(updateUser({email, name}))
+
     }
 
     return (
@@ -67,6 +72,7 @@ const Profile = () => {
                             onChange={(e) => setName(e.target.value)}
                             name={'name'}
                             placeholder={'Имя'}
+                            onBlur={onUpdateUser}
                             onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
                         />
                         <EmailInput
@@ -74,6 +80,7 @@ const Profile = () => {
                             isIcon={true}
                             name={'login'}
                             value={email}
+                            onBlur={onUpdateUser}
                             onChange={(e) => setEmail(e.target.value)}
                         />
 

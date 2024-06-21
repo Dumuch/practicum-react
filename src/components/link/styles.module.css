@@ -2,3 +2,7 @@
     color: var(--text-primary-color);
     text-decoration: none;
 }
+
+.inActive {
+    color: var(--text-inactive-color);
+}

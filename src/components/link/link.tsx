@@ -1,6 +1,6 @@
 import React, {FC, ReactNode, useState} from 'react';
 import styles from './styles.module.css';
-import {NavLink} from 'react-router-dom';
+import {NavLink, Link as BrowserLink} from 'react-router-dom';
 
 interface LinkProps {
     icon?: ReactNode
@@ -13,27 +13,38 @@ interface LinkProps {
 }
 
 const Link: FC<LinkProps> = ({classname, classnameText = '', icon, title, href, navLink = true}) => {
-    const [disabled, setDisabled] = useState(true)
 
-    const toggleActive = (isActive: boolean) => {
-        setDisabled(!isActive)
-        return ''
+    const body = () => {
+        return (
+            <>
+                {icon && (
+                    <div className="pr-2">
+                        {icon}
+                    </div>
+                )}
+                <span
+                    className={`text text_type_main-default ${classnameText}`}>{title}</span>
+            </>
+        )
     }
 
     return (
-        <NavLink to={href}
-                 className={({isActive}) =>
-                     `${styles.link} d-flex justify-between ${classname} ${toggleActive(isActive)}`
-                 }
-        >
-            {icon && (
-                <div className="pr-2">
-                    {icon}
-                </div>
+        <>
+            {navLink ? (
+                <NavLink to={href}
+                         className={({isActive}) =>
+                             `${styles.link} d-flex justify-between ${classname} ${!isActive ? styles.inActive : ''}`
+                         }
+                >
+                    {body()}
+                </NavLink>
+            ) : (
+                <BrowserLink to={href} className={`${styles.link} d-flex justify-between ${classname}}`
+                }>
+                    {body()}
+                </BrowserLink>
             )}
-            <span
-                className={`text text_type_main-default ${classnameText} ${navLink && disabled ? 'text_color_inactive' : ''}`}>{title}</span>
-        </NavLink>
+        </>
     );
 
 };

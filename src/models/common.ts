@@ -56,3 +56,9 @@ export interface IToken {
     accessToken: string,
     refreshToken: string
 }
+
+
+export interface IUpdateUserReq {
+    email: string,
+    name: string
+}
