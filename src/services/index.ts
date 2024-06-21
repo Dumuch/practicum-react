@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import commonReducer from './common';
 import ingredientsReducer from './ingredients';
-import orderReducer  from './order';
+import orderReducer from './order';
+import userReducer from './user';
 
 export const store = configureStore({
     reducer: {
         commonStore: commonReducer,
         ingredientsStore: ingredientsReducer,
-        orderStore: orderReducer
+        orderStore: orderReducer,
+        userStore: userReducer
     },
 })
 

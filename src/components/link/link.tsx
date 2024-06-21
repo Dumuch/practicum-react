@@ -1,27 +1,41 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 import styles from './styles.module.css';
-import {Link as RouteLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 interface LinkProps {
     icon?: ReactNode
     title: string
-    disabled?: boolean
     href: string
     classname?: string
     classnameText?: string
+    activeClassName?: string
+    navLink?: boolean
 }
 
-const Link: FC<LinkProps> = ({classname, classnameText, icon, title, disabled = false, href}) => {
+const Link: FC<LinkProps> = ({classname, classnameText = '', icon, title, href, navLink = true}) => {
+    const [disabled, setDisabled] = useState(true)
+
+    const toggleActive = (isActive: boolean) => {
+        setDisabled(!isActive)
+        return ''
+    }
+
     return (
-        <RouteLink to={href} className={`${styles.link} d-flex justify-between ${classname}`}>
+        <NavLink to={href}
+                 className={({isActive}) =>
+                     `${styles.link} d-flex justify-between ${classname} ${toggleActive(isActive)}`
+                 }
+        >
             {icon && (
                 <div className="pr-2">
                     {icon}
                 </div>
             )}
-            <span className={`${disabled && 'text_color_inactive'} text text_type_main-default ${classnameText}`}>{title}</span>
-        </RouteLink>
+            <span
+                className={`text text_type_main-default ${classnameText} ${navLink && disabled ? 'text_color_inactive' : ''}`}>{title}</span>
+        </NavLink>
     );
+
 };
 
 export default Link;

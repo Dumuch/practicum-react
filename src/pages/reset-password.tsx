@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import styles from "../components/app/styles.module.css";
 import AppHeader from "../components/app-header/app-header";
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -12,15 +12,23 @@ const ResetPassword = () => {
     const [token, setToken] = useState('')
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const accessed = sessionStorage.getItem('forgotPasswordAccessed');
+        if (!accessed) {
+            navigate(routes.forgotPassword, { replace: true });
+        }
+        sessionStorage.removeItem('forgotPasswordAccessed');
+    }, [navigate]);
+
     const onSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
             await resetPassword(password, token)
             navigate(routes.login)
-        } catch {
-
-        }
+        } catch {}
     }
+
+
 
     return (
         <div className={`${styles.app} d-flex flex-column`}>
@@ -58,7 +66,7 @@ const ResetPassword = () => {
 
                     <p className={'text text_type_main-default text-align-center mb-4 text_color_inactive d-flex justify-center'}>Вспомнили
                         пароль?
-                        <Link classname={'ml-2 link'} title={'Войти'} href={routes.login}/>
+                        <Link navLink={false} classname={'ml-2 link'} title={'Войти'} href={routes.login}/>
                     </p>
 
                 </div>

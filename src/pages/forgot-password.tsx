@@ -19,6 +19,7 @@ const ForgotPassword = () => {
         e.preventDefault()
         try {
             await forgotPassword(email)
+            sessionStorage.setItem('forgotPasswordAccessed', 'true');
             navigate(routes.resetPassword)
         } catch {}
     }
@@ -50,7 +51,7 @@ const ForgotPassword = () => {
 
                     <p className={'text text_type_main-default text-align-center mb-4 text_color_inactive d-flex justify-center'}>Вспомнили
                         пароль?
-                        <Link classname={'ml-2 link'} title={'Войти'} href={routes.login}/>
+                        <Link navLink={false} classname={'ml-2 link'} title={'Войти'} href={routes.login}/>
                     </p>
 
                 </div>

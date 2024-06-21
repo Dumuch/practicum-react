@@ -5,7 +5,9 @@ import {Button, EmailInput, PasswordInput, Input} from "@ya.praktikum/react-deve
 import Link from "../components/link/link";
 import {routes} from "./index";
 import {useNavigate} from "react-router-dom";
-import {register, resetPassword} from "../utils/burger-api";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../services";
+import {registerUser} from "../services/user";
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -13,12 +15,13 @@ const Register = () => {
     const [password, setPassword] = useState('')
 
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>()
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            await register(email, password, name)
-            navigate(routes.login)
+            await dispatch(registerUser({email, name, password}))
+            navigate(routes.main)
         } catch {
         }
     }
@@ -64,7 +67,7 @@ const Register = () => {
 
                     <p className={'text text_type_main-default text-align-center mb-4 text_color_inactive d-flex justify-center'}>Уже
                         зарегистрированы?
-                        <Link classname={'ml-2 link'} title={'Войти'} href={routes.login}/>
+                        <Link navLink={false} classname={'ml-2 link'} title={'Войти'} href={routes.login}/>
                     </p>
 
                 </div>
