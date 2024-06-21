@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
 
 const NotFound = () => {
     return (

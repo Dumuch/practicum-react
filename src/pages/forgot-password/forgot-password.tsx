@@ -1,27 +1,26 @@
-import React, {FormEvent, useState} from 'react';
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
+import React, {FormEvent} from 'react';
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import Link from "../components/link/link";
-import {routes} from "./index";
-import {forgotPassword} from "../utils/burger-api";
+import Link from "../../components/link/link";
+import {routes} from "../index";
+import {forgotPassword} from "../../utils/burger-api";
 import {useNavigate} from "react-router-dom";
+import {UseForm} from "../../helpers/useForm";
 
 const ForgotPassword = () => {
-    const [email, setEmail] = useState('')
-    const navigate = useNavigate();
+    const {values, onChange} = UseForm<{email: string}>({email: ''})
 
-    const onChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
-        setEmail(e.target.value)
-    }
+    const navigate = useNavigate();
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            await forgotPassword(email)
+            await forgotPassword(values.email)
             sessionStorage.setItem('forgotPasswordAccessed', 'true');
             navigate(routes.resetPassword)
-        } catch {}
+        } catch {
+        }
     }
     return (
         <div className={`${styles.app} d-flex flex-column`}>
@@ -34,8 +33,8 @@ const ForgotPassword = () => {
                     <form className={'form mb-20'} onSubmit={onSubmit}>
                         <p className={'text text_type_main-medium text-align-center'}>Восстановление пароля</p>
                         <Input
-                            value={email}
-                            onChange={onChange}
+                            value={values.email}
+                            onChange={onChange('email')}
                             name={'email'}
                             placeholder={'Укажите email'}
                             onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}

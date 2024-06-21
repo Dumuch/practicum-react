@@ -1,26 +1,26 @@
-import React, {FormEvent, useState} from 'react';
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
+import React, {FormEvent} from 'react';
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
 import {Button, EmailInput, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
-import Link from "../components/link/link";
-import {routes} from "./index";
+import Link from "../../components/link/link";
+import {routes} from "../index";
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../services";
-import {loginUser} from "../services/user";
+import {useAppDispatch, useAppSelector} from "../../services";
+import {loginUser} from "../../services/user";
+import {UseForm} from "../../helpers/useForm";
+import {ILoginReq} from "../../models/common";
 
 const Login = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const {error} = useSelector((state: RootState) => state.userStore)
+    const {values, onChange} = UseForm<ILoginReq>({email: '', password: ''})
+    const {error} = useAppSelector((state) => state.userStore)
 
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            await dispatch(loginUser({email, password})).unwrap()
+            await dispatch(loginUser(values)).unwrap()
             navigate(routes.main)
         } catch {
 
@@ -39,15 +39,15 @@ const Login = () => {
                         )}
                         <p className={'text text_type_main-medium text-align-center'}>Вход</p>
                         <EmailInput
-                            onChange={e => setEmail(e.target.value)}
-                            value={email}
+                            onChange={onChange('email')}
+                            value={values.email}
                             name={'email'}
                             isIcon={false}
                         />
 
                         <PasswordInput
-                            onChange={e => setPassword(e.target.value)}
-                            value={password}
+                            onChange={onChange('password')}
+                            value={values.password}
                             name={'password'}
                             extraClass="mb-2"
                         />

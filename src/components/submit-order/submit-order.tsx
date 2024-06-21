@@ -1,21 +1,21 @@
-import React, { FC } from 'react';
-import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, {FC} from 'react';
+import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css'
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { createOrder, resetOrder } from '../../services/order';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../services';
+import {createOrder, resetOrder} from '../../services/order';
+import {useAppDispatch, useAppSelector} from '../../services';
 
 interface SubmitOrderProps {
     price: number
 }
 
-const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
-    const { applyIngredients, applyBun } = useSelector((state: RootState) => state.commonStore)
-    const { order } = useSelector((state: RootState) => state.orderStore)
+const SubmitOrder: FC<SubmitOrderProps> = ({price}) => {
+    const applyIngredients = useAppSelector((state) => state.commonStore.applyIngredients)
+    const applyBun = useAppSelector((state) => state.commonStore.applyBun)
+    const order = useAppSelector((state) => state.orderStore.order)
 
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
 
     const submit = () => {
         const ids = applyIngredients.map(ingredient => ingredient.data._id)
@@ -26,7 +26,7 @@ const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
         dispatch(createOrder(ids))
     }
 
-    const closeModal = () =>{
+    const closeModal = () => {
         dispatch(resetOrder())
     }
 
@@ -34,7 +34,7 @@ const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
         <div className="d-flex align-items-center justify-end mt-10">
             <div className={`${styles.costWrapper} d-flex mr-10 align-items-center`}>
                 <span className={'text text_type_digits-medium pr-2'}>{price}</span>
-                <CurrencyIcon type="primary" />
+                <CurrencyIcon type="primary"/>
             </div>
 
             <Button htmlType="button" type="primary" size="large" onClick={submit} disabled={!applyBun}>
@@ -42,7 +42,7 @@ const SubmitOrder: FC<SubmitOrderProps> = ({ price }) => {
             </Button>
             {order &&
                 <Modal onClose={closeModal}>
-                    <OrderDetails />
+                    <OrderDetails/>
                 </Modal>
             }
         </div>

@@ -1,6 +1,5 @@
 import React, {FC, ReactElement, useCallback, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../services";
+import {useAppDispatch, useAppSelector} from "../../services";
 import {fetchUser, refreshUserToken} from "../../services/user";
 import {routes} from "../../pages";
 import {Navigate, useLocation} from "react-router-dom";
@@ -10,10 +9,11 @@ interface IProtectedRouteElementProps {
 }
 
 const ProtectedRouteElement: FC<IProtectedRouteElementProps> = ({children}) => {
-    const {user, loading} = useSelector((state: RootState) => state.userStore)
+    const user = useAppSelector((state) => state.userStore.user)
+    const loading = useAppSelector((state) => state.userStore.loading)
 
     const [isUserLoaded, setUserLoaded] = useState(false);
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
     const location = useLocation();
 
     const init = useCallback(async () => {
@@ -36,11 +36,11 @@ const ProtectedRouteElement: FC<IProtectedRouteElementProps> = ({children}) => {
     }, [init]);
 
     if (!isUserLoaded) {
-        return <></>;
+        return <p>Загрузка очень важной информации</p>;
     }
 
 
-    return user ? children : <Navigate to={routes.login} replace state={{ from: location }}/>;
+    return user ? children : <Navigate to={routes.login} replace state={{from: location}}/>;
 }
 
 export default ProtectedRouteElement

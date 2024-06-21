@@ -11,13 +11,12 @@ import {
     routes
 } from "../../pages";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../services";
+import {useAppDispatch} from "../../services";
 import {fetchUser} from "../../services/user";
 import PublicRouteElement from "../public-route-element/public-route-element";
 
 function App() {
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(fetchUser())

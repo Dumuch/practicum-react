@@ -1,22 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-import BurgerIngredients from "../components/burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../components/burger-constructor/burger-constructor";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../services";
-import {fetchIngredients} from "../services/ingredients";
-import {IngredientsPage, routes} from "./index";
+import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
+import {useAppDispatch, useAppSelector} from "../../services";
+import {fetchIngredients} from "../../services/ingredients";
+import {IngredientsPage, routes} from "../index";
 import {useLocation} from "react-router-dom";
 
 const Main = () => {
     const [loading, setLoading] = useState(false)
     const location = useLocation();
 
-    const {ingredients, error} = useSelector((state: RootState) => state.ingredientsStore)
-    const dispatch = useDispatch<AppDispatch>()
+    const ingredients = useAppSelector((state) => state.ingredientsStore.ingredients)
+    const error = useAppSelector((state) => state.ingredientsStore.error)
+
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         setLoading(true)

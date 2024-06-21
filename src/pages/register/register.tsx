@@ -1,26 +1,25 @@
-import React, {FormEvent, useState} from 'react';
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
+import React, {FormEvent} from 'react';
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
 import {Button, EmailInput, PasswordInput, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import Link from "../components/link/link";
-import {routes} from "./index";
+import Link from "../../components/link/link";
+import {routes} from "../index";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../services";
-import {registerUser} from "../services/user";
+import {registerUser} from "../../services/user";
+import {UseForm} from "../../helpers/useForm";
+import {IRegisterReq} from "../../models/common";
+import {useAppDispatch} from "../../services";
 
 const Register = () => {
-    const [email, setEmail] = useState('')
-    const [name, setName] = useState('')
-    const [password, setPassword] = useState('')
+    const {values, onChange} = UseForm<IRegisterReq>({email: '', name: '', password: ''})
 
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
 
     const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            await dispatch(registerUser({email, name, password}))
+            await dispatch(registerUser(values))
             navigate(routes.main)
         } catch {
         }
@@ -37,22 +36,22 @@ const Register = () => {
                     <form className={'form mb-20'} onSubmit={onSubmit}>
                         <p className={'text text_type_main-medium text-align-center'}>Регистрация</p>
                         <Input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={values.name}
+                            onChange={onChange('name')}
                             name={'name'}
                             placeholder={'Имя'}
                             onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
                         />
                         <EmailInput
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
+                            onChange={onChange('email')}
+                            value={values.email}
                             name={'email'}
                             isIcon={false}
                         />
 
                         <PasswordInput
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
+                            onChange={onChange('password')}
+                            value={values.password}
                             name={'password'}
                             extraClass="mb-2"
                         />

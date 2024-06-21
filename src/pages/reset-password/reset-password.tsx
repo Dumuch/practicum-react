@@ -1,15 +1,16 @@
-import React, {FormEvent, useEffect, useState} from 'react';
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
+import React, {FormEvent, useEffect} from 'react';
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import Link from "../components/link/link";
-import {routes} from "./index";
-import {resetPassword} from "../utils/burger-api";
+import Link from "../../components/link/link";
+import {routes} from "../index";
+import {resetPassword} from "../../utils/burger-api";
 import {useNavigate} from "react-router-dom";
+import {UseForm} from "../../helpers/useForm";
 
 const ResetPassword = () => {
-    const [password, setPassword] = useState('')
-    const [token, setToken] = useState('')
+    const {values, onChange} = UseForm<{password: string, token: string}>({password: '', token: ''})
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,7 +24,7 @@ const ResetPassword = () => {
     const onSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            await resetPassword(password, token)
+            await resetPassword(values.password, values.token)
             navigate(routes.login)
         } catch {}
     }
@@ -41,15 +42,15 @@ const ResetPassword = () => {
                     <form className={'form mb-20'} onSubmit={onSubmit}>
                         <p className={'text text_type_main-medium text-align-center'}>Восстановление пароля</p>
                         <PasswordInput
-                            value={password}
+                            value={values.password}
                             name={'password'}
                             extraClass="mb-2"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={onChange('password')}
                         />
 
                         <Input
-                            value={token}
-                            onChange={(e) => setToken(e.target.value)}
+                            value={values.token}
+                            onChange={onChange('token')}
                             name={'token'}
                             placeholder={'Введите код из письма'}
                             onPointerEnterCapture={undefined}

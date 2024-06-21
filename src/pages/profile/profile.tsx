@@ -1,23 +1,23 @@
 import React, {FormEvent, useState} from 'react';
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
 import {EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import Link from "../components/link/link";
-import {routes} from "./index";
+import Link from "../../components/link/link";
+import {routes} from "../index";
 
 import stylesProfilePage from "./profile.module.css";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../services";
-import {logoutUser, updateUser} from "../services/user";
+import {useAppDispatch, useAppSelector} from "../../services";
+import {logoutUser, updateUser} from "../../services/user";
+import {UseForm} from "../../helpers/useForm";
+import {IUpdateUserReq} from "../../models/common";
 
 
 const Profile = () => {
-    const dispatch = useDispatch<AppDispatch>()
-    const {user} = useSelector((state: RootState) => state.userStore)
+    const dispatch = useAppDispatch()
+    const user = useAppSelector((state) => state.userStore.user)
 
-    const [email, setEmail] = useState(user?.email ?? '')
-    const [name, setName] = useState(user?.name ?? '')
-    const [password, setPassword] = useState('1111111')
+    const {values, onChange} = UseForm<IUpdateUserReq>({email: user?.email ?? '', name: user?.name ?? ''})
+    const [password, setPassword] = useState('')
 
 
     const onClick = async () => {
@@ -33,7 +33,7 @@ const Profile = () => {
     }
 
     const onUpdateUser = async () => {
-        await dispatch(updateUser({email, name}))
+        await dispatch(updateUser(values))
 
     }
 
@@ -68,8 +68,8 @@ const Profile = () => {
                     <form className={'form ml-15 mb-20'} onSubmit={onSubmit}>
                         <Input
                             icon={'EditIcon'}
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={values.name}
+                            onChange={onChange('name')}
                             name={'name'}
                             placeholder={'Имя'}
                             onBlur={onUpdateUser}
@@ -79,9 +79,9 @@ const Profile = () => {
                             placeholder={'Логин'}
                             isIcon={true}
                             name={'login'}
-                            value={email}
+                            value={values.email}
                             onBlur={onUpdateUser}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={onChange('email')}
                         />
 
                         <PasswordInput

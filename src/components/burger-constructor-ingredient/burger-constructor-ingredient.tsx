@@ -1,12 +1,11 @@
-import React, { FC, useRef } from 'react';
+import React, {FC, useRef} from 'react';
 import styles from '../burger-constructor/styles.module.css';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { removeIngredient, sortApplyIngredients } from '../../services/common';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../services';
-import { IIngredient } from '../../models/common';
-import { useDrag, useDrop } from 'react-dnd';
-import type { Identifier, XYCoord } from 'dnd-core'
+import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {removeIngredient, sortApplyIngredients} from '../../services/common';
+import {useAppDispatch} from '../../services';
+import {IIngredient} from '../../models/common';
+import {useDrag, useDrop} from 'react-dnd';
+import type {Identifier, XYCoord} from 'dnd-core'
 
 interface BurgerConstructorIngredientProps {
     ingredient: IIngredient
@@ -20,8 +19,8 @@ interface DragItem {
     type: string;
 }
 
-const BurgerConstructorIngredient: FC<BurgerConstructorIngredientProps> = ({ id, ingredient, index }) => {
-    const dispatch = useDispatch<AppDispatch>()
+const BurgerConstructorIngredient: FC<BurgerConstructorIngredientProps> = ({id, ingredient, index}) => {
+    const dispatch = useAppDispatch()
 
     const handleClose = () => {
         dispatch(removeIngredient(id))
@@ -68,16 +67,16 @@ const BurgerConstructorIngredient: FC<BurgerConstructorIngredientProps> = ({ id,
                 return;
             }
 
-            dispatch(sortApplyIngredients({ dragIndex, hoverIndex }))
+            dispatch(sortApplyIngredients({dragIndex, hoverIndex}))
 
             item.index = hoverIndex;
         },
     })
 
-    const [{ opacity }, drag, preview] = useDrag({
+    const [{opacity}, drag, preview] = useDrag({
         type: 'ingredient-constructor',
         item: () => {
-            return { id, index }
+            return {id, index}
         },
         collect: (monitor) => ({
             opacity: monitor.isDragging() ? 0.05 : 1,
@@ -88,9 +87,9 @@ const BurgerConstructorIngredient: FC<BurgerConstructorIngredientProps> = ({ id,
 
     return (
         <div ref={ref}>
-            <div ref={preview} style={{ opacity }}>
+            <div ref={preview} style={{opacity}}>
                 <div ref={drag} className={styles.dragButton}>
-                    <DragIcon type="primary" />
+                    <DragIcon type="primary"/>
                 </div>
                 <ConstructorElement
                     isLocked={false}

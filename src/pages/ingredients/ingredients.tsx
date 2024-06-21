@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {RootState} from "../services";
-import styles from "../components/app/styles.module.css";
-import AppHeader from "../components/app-header/app-header";
-import {IIngredient} from "../models/common";
-import IngredientDetails from "../components/ingredient-details/ingredient-details";
+import {useAppSelector} from "../../services";
+import styles from "../../components/app/styles.module.css";
+import AppHeader from "../../components/app-header/app-header";
+import {IIngredient} from "../../models/common";
+import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 
 const Ingredients = () => {
-    const {ingredients, error, loading} = useSelector((state: RootState) => state.ingredientsStore)
+    const {ingredients, error, loading} = useAppSelector((state) => state.ingredientsStore)
     const location = useLocation();
     const [currentIngredient, setCurrentIngredient] = useState<IIngredient | null>(null)
 

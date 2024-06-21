@@ -6,8 +6,7 @@ import {IIngredient} from '../../models/common';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import {groupIngredients} from '../../helpers';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../services';
+import {useAppDispatch, useAppSelector} from '../../services';
 import {setCurrentIngredient} from '../../services/common';
 import {useLocation, useNavigate} from "react-router-dom";
 import {routes} from "../../pages";
@@ -21,9 +20,9 @@ const OFFSET_Y = 40
 
 const BurgerIngredients: FC<BurgerIngredientsProps> = ({ingredients}) => {
     const [current, setCurrent] = React.useState('one')
+    const currentIngredient = useAppSelector((state) => state.commonStore.currentIngredient)
 
-    const {currentIngredient} = useSelector((state: RootState) => state.commonStore)
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
     const location = useLocation();
     const navigate = useNavigate();
 
