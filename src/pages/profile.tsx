@@ -1,20 +1,19 @@
 import React, {FormEvent, useState} from 'react';
 import styles from "../components/app/styles.module.css";
 import AppHeader from "../components/app-header/app-header";
-import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import Link from "../components/link/link";
 import {routes} from "./index";
 
 import stylesProfilePage from "./profile.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../services";
-import {logoutUser, registerUser, updateUser} from "../services/user";
-import {NavLink} from "react-router-dom";
+import {logoutUser, updateUser} from "../services/user";
 
 
 const Profile = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { user } = useSelector((state: RootState) => state.userStore)
+    const {user} = useSelector((state: RootState) => state.userStore)
 
     const [email, setEmail] = useState(user?.email ?? '')
     const [name, setName] = useState(user?.name ?? '')
@@ -29,10 +28,11 @@ const Profile = () => {
         e.preventDefault()
         try {
             // await dispatch(registerUser({email, name, password})).unwrap()
-        } catch {}
+        } catch {
+        }
     }
 
-    const onUpdateUser = async () =>{
+    const onUpdateUser = async () => {
         await dispatch(updateUser({email, name}))
 
     }
