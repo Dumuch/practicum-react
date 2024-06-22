@@ -15,7 +15,8 @@ code {
 .container {
     margin-left: auto;
     margin-right: auto;
-    width: 1400px
+    width: 1400px;
+    flex: 1;
 }
 
 .d-flex {
@@ -48,8 +49,55 @@ code {
 
 .list {
     list-style: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+}
+
+.align-items-start {
+    align-items: flex-start;
 }
 
 .align-items-center {
     align-items: center;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+}
+
+.width-fit {
+    width: fit-content;
+}
+
+.mt-a {
+    margin-top: auto;
+}
+
+.mb-a {
+    margin-bottom: auto;
+}
+
+.ml-a {
+    margin-left: auto;
+}
+
+.mr-a {
+    margin-right: auto;
+}
+
+.link {
+    color: var(--colors-interface-accent)!important;
+    transition: 0.2s;
+}
+
+.link:hover {
+    opacity: 0.75;
 }

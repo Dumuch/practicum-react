@@ -3,15 +3,16 @@ import styles from './styles.module.css'
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IIngredient } from '../../models/common';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../services';
+import {useAppSelector} from '../../services';
 
 interface IngredientCardProps {
     ingredient: IIngredient
 }
 
 const IngredientCard: FC<IngredientCardProps> = ({ ingredient }) => {
-    const { applyIngredients, applyBun } = useSelector((state: RootState) => state.commonStore)
+    const applyIngredients = useAppSelector((state) => state.commonStore.applyIngredients)
+    const applyBun = useAppSelector((state) => state.commonStore.applyBun)
+
     const [{ isDrag }, dragRef] = useDrag({
         type: 'ingredient',
         item: ingredient,

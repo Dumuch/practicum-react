@@ -1,48 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import styles from './styles.module.css';
-import AppHeader from '../app-header/app-header';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchIngredients } from '../../services/ingredients';
-import { AppDispatch, RootState } from '../../services';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import React, {useEffect} from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {
+    LoginPage,
+    MainPage,
+    RegisterPage,
+    ForgotPasswordPage,
+    ResetPasswordPage,
+    ProfilePage,
+    NotFound404Page,
+    routes
+} from "../../pages";
+import ProtectedRouteElement from "../protected-route-element/protected-route-element";
+import {useAppDispatch} from "../../services";
+import {fetchUser} from "../../services/user";
+import PublicRouteElement from "../public-route-element/public-route-element";
 
 function App() {
-    const [loading, setLoading] = useState(false)
-
-    const {ingredients, error} = useSelector((state: RootState) => state.ingredientsStore)
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        setLoading(true)
-
-        dispatch(fetchIngredients()).finally(() =>{
-            setLoading(false)
-        })
+        dispatch(fetchUser())
     }, [dispatch]);
 
     return (
-        <div className={`${styles.app} d-flex flex-column`}>
-            <AppHeader />
-            <main className={`${styles.container} container d-flex justify-between`}>
-
-                {loading && (<p>Загрузка ингредиентов...</p>)}
-                {error && (<p>{error}</p>)}
-                {!!ingredients.length && (
-                    <DndProvider backend={HTML5Backend}>
-                        <div className={`${styles.column} mr-10`}>
-                            <BurgerIngredients ingredients={ingredients} />
-                        </div>
-                        <div className={styles.column}>
-                            <BurgerConstructor ingredients={ingredients} />
-                        </div>
-                    </DndProvider>
-                )}
-            </main>
-
-        </div>
+        <Router>
+            <Routes>
+                <Route path={routes.main} element={<MainPage/>}/>
+                <Route path={routes.login} element={
+                    <PublicRouteElement>
+                        <LoginPage/>
+                    </PublicRouteElement>
+                }/>
+                <Route path={routes.register} element={
+                    <PublicRouteElement>
+                        <RegisterPage/>
+                    </PublicRouteElement>
+                }/>
+                <Route path={routes.forgotPassword} element={
+                    <PublicRouteElement>
+                        <ForgotPasswordPage/>
+                    </PublicRouteElement>
+                }/>
+                <Route path={routes.resetPassword} element={
+                    <PublicRouteElement>
+                        <ResetPasswordPage/>
+                    </PublicRouteElement>
+                }/>
+                <Route path={routes.profile.main} element={
+                    <ProtectedRouteElement>
+                        <ProfilePage/>
+                    </ProtectedRouteElement>
+                }>
+                    <Route path={routes.profile.orders} element={
+                        <ProtectedRouteElement>
+                            <ProfilePage/>
+                        </ProtectedRouteElement>
+                    }/>
+                </Route>
+                <Route path={`${routes.ingredients}/:id`} element={<MainPage/>}/>
+                <Route path="*" element={<NotFound404Page/>}/>
+            </Routes>
+        </Router>
     );
 }
 
