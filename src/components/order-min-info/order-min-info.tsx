@@ -1,41 +1,61 @@
-import React from "react";
+import React, {FC} from "react";
 import styles from './styles.module.css'
 import img from '../../images/img.jpg'
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useNavigate} from "react-router-dom";
 import {routes} from "../../pages";
+import {IIngredient, TOrder} from "../../models/common";
+import {useAppSelector} from "../../services";
 
-const OrderMinInfo = () => {
+interface IProps extends TOrder {
+}
+const MAX_VISIBLE_INGREDIENTS = 5
+
+const OrderMinInfo: FC<IProps> = ({ingredients, name, number, status, createdAt, _id}) => {
     const navigate = useNavigate();
+    const allIngredients = useAppSelector((state) => state.ingredientsStore.ingredients)
+    const findIngredients: IIngredient[] = []
 
-    const onClick = () =>{
-        navigate(routes.feed + '/12')
+    ingredients.forEach(id => {
+        const find = allIngredients.find(i => i._id === id)
+        if (find) {
+            findIngredients.push(find)
+        }
+    })
+
+    const price = findIngredients.reduce((acc, {price}) => acc + price, 0)
+
+    const onClick = () => {
+        navigate(routes.feed + '/' + _id)
     }
     return (
         <div className={`${styles.wrapper} p-5`} onClick={onClick}>
             <div className={`${styles.header} mb-4`}>
-                <span className={`text text_type_digits-default`}>#123123</span>
-                <span  className={'text text_type_main-small text_color_inactive'}>Сегодня в 15.23</span>
+                <span className={`text text_type_digits-default`}>#{number}</span>
+                <span className={'text text_type_main-small text_color_inactive'}><FormattedDate
+                    date={new Date(createdAt)}/></span>
             </div>
 
-            <h3 className={'text text_type_main-medium mb-4'}>Бургер большой с картошкой</h3>
+            <h3 className={'text text_type_main-medium mb-4'}>{name}</h3>
 
             <div className={styles.footer}>
                 <div className={styles.images}>
-                    <img src={img} alt={''} style={{zIndex: 6}}/>
-                    <img src={img} alt={''} style={{left: '-10px', zIndex: 5}}/>
-                    <img src={img} alt={''} style={{left: '-20px', zIndex: 4}}/>
-                    <img src={img} alt={''} style={{left: '-30px', zIndex: 3}}/>
-                    <img src={img} alt={''} style={{left: '-40px', zIndex: 2}}/>
-                    <img src={img} alt={''} style={{left: '-50px', zIndex: 1}}/>
-                    <div className={styles.wrapperLastImage} style={{left: '-60px'}}>
-                        <div className={styles.counter}>+3</div>
-                        <img src={img} alt={''}/>
-                    </div>
+                    {findIngredients.slice(0, MAX_VISIBLE_INGREDIENTS - 1).map((ingredient, index) => {
+                        return <img src={ingredient.image} alt={''} style={{zIndex: findIngredients.length - 1}}/>
+                    })}
+
+                    {
+                        findIngredients.length > MAX_VISIBLE_INGREDIENTS && (
+                            <div className={styles.wrapperLastImage} >
+                                <div className={styles.counter}>+{findIngredients.length - MAX_VISIBLE_INGREDIENTS - 1}</div>
+                                <img src={findIngredients[MAX_VISIBLE_INGREDIENTS - 1].image} alt={''}/>
+                            </div>
+                        )
+                    }
                 </div>
 
                 <div className="d-flex justify-center mt-1 mb-1">
-                    <span className={'text text_type_digits-default pr-2'}>100</span>
+                    <span className={'text text_type_digits-default pr-2'}>{price}</span>
                     <CurrencyIcon type="primary"/>
                 </div>
             </div>
