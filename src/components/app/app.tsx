@@ -16,12 +16,16 @@ import ProtectedRouteElement from "../protected-route-element/protected-route-el
 import {useAppDispatch} from "../../services";
 import {fetchUser} from "../../services/user";
 import PublicRouteElement from "../public-route-element/public-route-element";
+import {fetchOrders} from "../../services/common";
+import {fetchIngredients} from "../../services/ingredients";
 
 function App() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(fetchUser())
+        dispatch(fetchOrders())
+        dispatch(fetchIngredients())
     }, [dispatch]);
 
     return (

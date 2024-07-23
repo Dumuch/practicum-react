@@ -62,3 +62,20 @@ export interface IUpdateUserReq {
     email: string,
     name: string
 }
+
+export type WsOrders = {
+    success:boolean
+    total: number
+    totalToday: number
+    orders: TOrder[]
+}
+
+export type TOrder = {
+    createdAt:string
+    ingredients:string[]
+    name:string
+    number:number
+    status: "done" | 'created' | 'pending'
+    updatedAt: string
+    _id: string
+}
