@@ -8,7 +8,9 @@ import {
     ResetPasswordPage,
     ProfilePage,
     NotFound404Page,
-    routes
+    routes,
+    FeedPage,
+    FeedDetailsPage
 } from "../../pages";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import {useAppDispatch} from "../../services";
@@ -26,6 +28,8 @@ function App() {
         <Router>
             <Routes>
                 <Route path={routes.main} element={<MainPage/>}/>
+                <Route path={routes.feed} element={<FeedPage/>}/>
+                <Route path={`${routes.feed}/:id`} element={<FeedDetailsPage/>}/>
                 <Route path={routes.login} element={
                     <PublicRouteElement>
                         <LoginPage/>
@@ -52,6 +56,11 @@ function App() {
                     </ProtectedRouteElement>
                 }>
                     <Route path={routes.profile.orders} element={
+                        <ProtectedRouteElement>
+                            <ProfilePage/>
+                        </ProtectedRouteElement>
+                    }/>
+                    <Route path={`${routes.profile.orders}/:id`} element={
                         <ProtectedRouteElement>
                             <ProfilePage/>
                         </ProtectedRouteElement>

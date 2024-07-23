@@ -12,17 +12,17 @@ const AppHeader = () => {
             <div className="container">
                 <nav className={`${styles.navigation} d-flex justify-between pt-4 pb-4`}>
                     <div className={'d-flex justify-between'}>
-                        <Link title={'Конструктор'} icon={<BurgerIcon type="primary"/>} href={'/'}
+                        <Link title={'Конструктор'} Icon={BurgerIcon} href={'/'}
                               classname={'pl-5 pr-5 pt-4 pb-4 mr-2'}/>
-                        <Link title={'Лента заказов'} icon={<ListIcon type="secondary"/>} href={'/'}
+                        <Link title={'Лента заказов'} Icon={ListIcon} href={routes.feed}
                               classname={'pl-5 pr-5 pt-4 pb-4 mr-2'}/>
                     </div>
                     <Logo/>
                     {user ? (
-                        <Link title={'Личный кабинет'} icon={<ProfileIcon type="secondary"/>} href={routes.profile.main}
+                        <Link title={'Личный кабинет'} Icon={ProfileIcon} href={routes.profile.main}
                               classname={'pl-5 pr-5 pt-4 pb-4 mr-2'}/>
                     ) : (
-                        <Link title={'Войти'} icon={<ProfileIcon type="secondary"/>} href={routes.login}
+                        <Link title={'Войти'} Icon={ProfileIcon} href={routes.login}
                               classname={'pl-5 pr-5 pt-4 pb-4 mr-2'}/>
                     )}
                 </nav>
