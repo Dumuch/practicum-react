@@ -1,6 +1,5 @@
 import React, {FC} from "react";
 import styles from './styles.module.css'
-import img from '../../images/img.jpg'
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useNavigate} from "react-router-dom";
 import {routes} from "../../pages";
@@ -9,6 +8,7 @@ import {useAppSelector} from "../../services";
 
 interface IProps extends TOrder {
 }
+
 const MAX_VISIBLE_INGREDIENTS = 5
 
 const OrderMinInfo: FC<IProps> = ({ingredients, name, number, status, createdAt, _id}) => {
@@ -41,13 +41,17 @@ const OrderMinInfo: FC<IProps> = ({ingredients, name, number, status, createdAt,
             <div className={styles.footer}>
                 <div className={styles.images}>
                     {findIngredients.slice(0, MAX_VISIBLE_INGREDIENTS - 1).map((ingredient, index) => {
-                        return <img src={ingredient.image} alt={''} style={{zIndex: findIngredients.length - 1}}/>
+                        return <img key={index} src={ingredient.image} alt={''}
+                                    style={{zIndex: findIngredients.length - 1}}/>
                     })}
 
                     {
                         findIngredients.length > MAX_VISIBLE_INGREDIENTS && (
-                            <div className={styles.wrapperLastImage} >
-                                <div className={styles.counter}>+{findIngredients.length - MAX_VISIBLE_INGREDIENTS - 1}</div>
+                            <div className={styles.wrapperLastImage}>
+                                {findIngredients.length - MAX_VISIBLE_INGREDIENTS - 1 !== 0 && (
+                                    <div
+                                        className={styles.counter}>+{findIngredients.length - MAX_VISIBLE_INGREDIENTS - 1}</div>
+                                )}
                                 <img src={findIngredients[MAX_VISIBLE_INGREDIENTS - 1].image} alt={''}/>
                             </div>
                         )

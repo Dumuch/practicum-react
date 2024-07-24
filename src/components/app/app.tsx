@@ -16,7 +16,7 @@ import ProtectedRouteElement from "../protected-route-element/protected-route-el
 import {useAppDispatch} from "../../services";
 import {fetchUser} from "../../services/user";
 import PublicRouteElement from "../public-route-element/public-route-element";
-import {fetchOrders} from "../../services/common";
+import {connectWSOrders} from "../../services/common";
 import {fetchIngredients} from "../../services/ingredients";
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
 
     useEffect(() => {
         dispatch(fetchUser())
-        dispatch(fetchOrders())
+        dispatch(connectWSOrders())
         dispatch(fetchIngredients())
     }, [dispatch]);
 

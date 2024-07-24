@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, nanoid} from '@reduxjs/toolkit'
+import {createAction, createAsyncThunk, createSlice, nanoid} from '@reduxjs/toolkit'
 import {IIngredient, WsOrders} from '../models/common';
 import { arrayMove } from '../helpers';
 
@@ -22,10 +22,9 @@ const initialState: CommonState = {
     }
 }
 
-export const fetchOrders = createAsyncThunk(
-    'orders/fetch',
-    () => {},
-)
+export const INIT_WS = 'orders/ws/init'
+
+export const connectWSOrders = createAction(INIT_WS)
 
 export const commonSlice = createSlice({
     name: 'common',

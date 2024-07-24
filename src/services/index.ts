@@ -1,17 +1,16 @@
 import {useDispatch, useSelector} from 'react-redux'
 import {configureStore} from '@reduxjs/toolkit'
-import commonReducer, {setOrders} from './common';
+import commonReducer, {INIT_WS, setOrders} from './common';
 import ingredientsReducer from './ingredients';
 import orderReducer from './order';
 import userReducer from './user';
 import {
     socketMiddleware
 } from "../utils/socketMiddleware";
-
-const wsUrl: string = 'wss://norma.nomoreparties.space/orders/all';
+import {WS_API} from "../constants";
 
 const wsOrdersReducers = {
-    wsInit: 'orders/fetch/pending',
+    wsInit: INIT_WS,
     onMessage: setOrders
 };
 
@@ -22,7 +21,7 @@ export const store = configureStore({
         orderStore: orderReducer,
         userStore: userReducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware(wsUrl, wsOrdersReducers))
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware(WS_API.orders, wsOrdersReducers))
 })
 
 export type RootState = ReturnType<typeof store.getState>

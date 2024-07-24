@@ -9,7 +9,7 @@ import {TOrder} from "../../models/common";
 const Profile = () => {
     const data = useAppSelector((state) => state.commonStore.orders.data)
 
-    const sortByStatus: { done: TOrder[], pending: TOrder[] } = data?.orders.reduce((acc, data) => {
+    const sortByStatus = data?.orders.reduce((acc, data) => {
         if (data.status === 'done') {
             acc.done.push(data)
         }
@@ -45,9 +45,9 @@ const Profile = () => {
                                     <span className={'text text_type_main-medium'}>Готовы:</span>
                                     <ul className={`${stylesFeed.list} list mt-5`}>
                                         {sortByStatus.done.map(({number}) => {
-                                        return (<li key={number}>
-                                            <p className={`text text_type_digits-default ${stylesFeed.highlight}`}>{number}</p>
-                                        </li>)
+                                            return (<li key={number}>
+                                                <p className={`text text_type_digits-default ${stylesFeed.highlight}`}>{number}</p>
+                                            </li>)
                                         })}
                                     </ul>
                                 </div>

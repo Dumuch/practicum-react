@@ -1,6 +1,7 @@
 import type {Middleware, MiddlewareAPI} from 'redux';
 import {AppDispatch, RootState} from "../services";
 import {UnknownAction} from "@reduxjs/toolkit";
+import {getCurrentTimestamp} from "../helpers";
 
 export type AppActions = any;
 
@@ -11,8 +12,6 @@ export type TWSStoreActions<T, S> = {
     onError?: (payload: Event) => unknown,
     onMessage: (payload: T) => unknown,
 };
-
-const getCurrentTimestamp = (): number => new Date().getTime() / 1000;
 
 export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions<T, S>): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
