@@ -1,5 +1,4 @@
 .container {
-    width: 50%;
 }
 
 .list {
@@ -31,4 +30,8 @@
     justify-content: space-between;
     gap: 10px;
     align-items: center;
+}
+
+.status {
+    color: var(--colors-interface-success);
 }

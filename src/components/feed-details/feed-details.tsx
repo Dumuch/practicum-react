@@ -1,36 +1,79 @@
-import React from "react";
+import React, {FC} from "react";
 import styles from "./styles.module.css";
 import img from "../../images/img.jpg";
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
+import {IIngredient, TOrder} from "../../models/common";
+import {useAppSelector} from "../../services";
 
-const FeedDetails = () => {
+interface IProps extends TOrder {
+}
+
+const FeedDetails: FC<IProps> = (order) => {
+    const {ingredients, name, number, status, createdAt, _id} = order
+    const allIngredients = useAppSelector((state) => state.ingredientsStore.ingredients)
+
+    let statusStr = 'Выполнен'
+
+    switch (status) {
+        case 'pending':
+            statusStr = 'Готовится'
+            break
+        case 'created':
+            statusStr = 'Создан'
+            break
+    }
+
+    const findIngredientsByGroup: { ingredient: IIngredient, quantity: number }[] = []
+
+    const groupIngredients = ingredients.reduce((acc, id) => {
+        if (acc[id]) {
+            acc[id] = acc[id] + 1
+        } else {
+            acc[id] = 1
+        }
+        return acc
+    }, {} as Record<string, number>)
+
+
+    for (const id in groupIngredients) {
+        const find = allIngredients.find(i => i._id === id)
+        if (find) {
+            findIngredientsByGroup.push({
+                ingredient: find,
+                quantity: groupIngredients[id]
+            })
+        }
+
+    }
+
+    const price = findIngredientsByGroup.reduce((acc, {ingredient, quantity}) => acc + ingredient.price * quantity, 0)
+
     return (
         <div className={`${styles.container} d-flex mb-20 flex-column`}>
-            <span className={`text text_type_digits-default mb-10 text-align-center`}>#123123</span>
+            <span className={`text text_type_digits-default mb-10 text-align-center`}>#{number}</span>
 
-            <h2 className={'text text_type_main-medium mb-5'}>БУргер уцкуц:</h2>
-            <span className={'text text_type_main-default mb-20'}>Выполнен</span>
+            <h2 className={'text text_type_main-medium mb-5'}>{name}:</h2>
+            <span className={`${styles.status} text text_type_main-default mb-20`}>{statusStr}</span>
 
             <span className={'text text_type_main-medium'}>Состав:</span>
             <ul className={`${styles.list} list mt-5`}>
-                <li>
-                    <img src={img} alt={''}/>
-                    <span className={`${styles.title} text text_type_main-default`}>Состав:</span>
-                    <p className={`text text_type_digits-default`}> 2 x 41123434</p>
-                    <CurrencyIcon type="primary"/>
-                </li>
-                <li>
-                    <img src={img} alt={''}/>
-                    <span className={`${styles.title} text text_type_main-small`}>Состав:</span>
-                    <p className={`text text_type_digits-default`}> 2 x 41123434</p>
-                    <CurrencyIcon type="primary"/>
-                </li>
+                {findIngredientsByGroup.map(({ingredient, quantity}) => {
+                    return (
+                        <li key={ingredient._id}>
+                            <img src={ingredient.image_mobile} alt={''}/>
+                            <span className={`${styles.title} text text_type_main-default`}>{ingredient.name}:</span>
+                            <p className={`text text_type_digits-default`}>{quantity} x {ingredient.price}</p>
+                            <CurrencyIcon type="primary"/>
+                        </li>
+                    )
+                })}
             </ul>
             <div className={`${styles.footer} mt-10`}>
-                <span className={'text text_type_main-small'}>Вчера, 123</span>
+                <span className={'text text_type_main-small text_color_inactive'}><FormattedDate
+                    date={new Date(createdAt)}/></span>
 
                 <div className={'d-flex align-items-center'}>
-                    <p className={`text text_type_digits-default mr-2`}>500</p>
+                    <p className={`text text_type_digits-default mr-2`}>{price}</p>
                     <CurrencyIcon type="primary"/>
                 </div>
             </div>

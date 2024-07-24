@@ -4,16 +4,20 @@ import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-
 import {useNavigate} from "react-router-dom";
 import {routes} from "../../pages";
 import {IIngredient, TOrder} from "../../models/common";
-import {useAppSelector} from "../../services";
+import {useAppDispatch, useAppSelector} from "../../services";
+import {setCurrentOrder} from "../../services/common";
 
 interface IProps extends TOrder {
 }
 
-const MAX_VISIBLE_INGREDIENTS = 5
+const MAX_VISIBLE_INGREDIENTS = 6
 
-const OrderMinInfo: FC<IProps> = ({ingredients, name, number, status, createdAt, _id}) => {
+const OrderMinInfo: FC<IProps> = (order) => {
     const navigate = useNavigate();
     const allIngredients = useAppSelector((state) => state.ingredientsStore.ingredients)
+    const dispatch = useAppDispatch()
+    const {ingredients, name, number, createdAt, _id} = order
+
     const findIngredients: IIngredient[] = []
 
     ingredients.forEach(id => {
@@ -27,44 +31,50 @@ const OrderMinInfo: FC<IProps> = ({ingredients, name, number, status, createdAt,
 
     const onClick = () => {
         navigate(routes.feed + '/' + _id)
+        dispatch(setCurrentOrder(order))
     }
+
+
     return (
-        <div className={`${styles.wrapper} p-5`} onClick={onClick}>
-            <div className={`${styles.header} mb-4`}>
-                <span className={`text text_type_digits-default`}>#{number}</span>
-                <span className={'text text_type_main-small text_color_inactive'}><FormattedDate
-                    date={new Date(createdAt)}/></span>
-            </div>
-
-            <h3 className={'text text_type_main-medium mb-4'}>{name}</h3>
-
-            <div className={styles.footer}>
-                <div className={styles.images}>
-                    {findIngredients.slice(0, MAX_VISIBLE_INGREDIENTS - 1).map((ingredient, index) => {
-                        return <img key={index} src={ingredient.image} alt={''}
-                                    style={{zIndex: findIngredients.length - 1}}/>
-                    })}
-
-                    {
-                        findIngredients.length > MAX_VISIBLE_INGREDIENTS && (
-                            <div className={styles.wrapperLastImage}>
-                                {findIngredients.length - MAX_VISIBLE_INGREDIENTS - 1 !== 0 && (
-                                    <div
-                                        className={styles.counter}>+{findIngredients.length - MAX_VISIBLE_INGREDIENTS - 1}</div>
-                                )}
-                                <img src={findIngredients[MAX_VISIBLE_INGREDIENTS - 1].image} alt={''}/>
-                            </div>
-                        )
-                    }
+        <>
+            <div className={`${styles.wrapper} p-5`} onClick={onClick}>
+                <div className={`${styles.header} mb-4`}>
+                    <span className={`text text_type_digits-default`}>#{number}</span>
+                    <span className={'text text_type_main-small text_color_inactive'}><FormattedDate
+                        date={new Date(createdAt)}/></span>
                 </div>
 
-                <div className="d-flex justify-center mt-1 mb-1">
-                    <span className={'text text_type_digits-default pr-2'}>{price}</span>
-                    <CurrencyIcon type="primary"/>
+                <h3 className={'text text_type_main-medium mb-4'}>{name}</h3>
+
+                <div className={styles.footer}>
+                    <div className={styles.images}>
+                        {findIngredients.slice(0, MAX_VISIBLE_INGREDIENTS - 1).map((ingredient, index) => {
+                            return <img key={index} src={ingredient.image} alt={''}
+                                        style={{zIndex: findIngredients.length - 1}}/>
+                        })}
+
+                        {
+                            findIngredients.length > MAX_VISIBLE_INGREDIENTS - 1 && (
+                                <div className={styles.wrapperLastImage}>
+                                    {findIngredients.length - MAX_VISIBLE_INGREDIENTS !== 0 && (
+                                        <div
+                                            className={styles.counter}>+{findIngredients.length - MAX_VISIBLE_INGREDIENTS}</div>
+                                    )}
+                                    <img src={findIngredients[MAX_VISIBLE_INGREDIENTS - 1].image} alt={''}/>
+                                </div>
+                            )
+                        }
+                    </div>
+
+                    <div className="d-flex justify-center mt-1 mb-1">
+                        <span className={'text text_type_digits-default pr-2'}>{price}</span>
+                        <CurrencyIcon type="primary"/>
+                    </div>
                 </div>
+
             </div>
 
-        </div>
+        </>
     )
 }
 

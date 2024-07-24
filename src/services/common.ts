@@ -1,5 +1,5 @@
 import {createAction, createAsyncThunk, createSlice, nanoid} from '@reduxjs/toolkit'
-import {IIngredient, WsOrders} from '../models/common';
+import {IIngredient, TOrder, WsOrders} from '../models/common';
 import { arrayMove } from '../helpers';
 
 export interface CommonState {
@@ -9,7 +9,8 @@ export interface CommonState {
     order: {},
     orders: {
         data: WsOrders | null
-    }
+    },
+    currentOrder: TOrder | null
 }
 
 const initialState: CommonState = {
@@ -19,7 +20,8 @@ const initialState: CommonState = {
     applyBun: null,
     orders: {
         data: null
-    }
+    },
+    currentOrder: null
 }
 
 export const INIT_WS = 'orders/ws/init'
@@ -35,6 +37,9 @@ export const commonSlice = createSlice({
         }),
         setCurrentIngredient: create.reducer<IIngredient | null>((state, action) => {
             state.currentIngredient = action.payload
+        }),
+        setCurrentOrder: create.reducer<TOrder | null>((state, action) => {
+            state.currentOrder = action.payload
         }),
         addIngredient: create.preparedReducer(
             (ingredient: IIngredient) => {
@@ -66,6 +71,7 @@ export const {
     setApplyBun,
     removeIngredient,
     setOrders,
+    setCurrentOrder
 } = commonSlice.actions
 
 export default commonSlice.reducer

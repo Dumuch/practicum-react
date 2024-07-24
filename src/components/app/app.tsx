@@ -33,7 +33,7 @@ function App() {
             <Routes>
                 <Route path={routes.main} element={<MainPage/>}/>
                 <Route path={routes.feed} element={<FeedPage/>}/>
-                <Route path={`${routes.feed}/:id`} element={<FeedDetailsPage/>}/>
+                <Route path={`${routes.feed}/:id`} element={<FeedPage/>}/>
                 <Route path={routes.login} element={
                     <PublicRouteElement>
                         <LoginPage/>

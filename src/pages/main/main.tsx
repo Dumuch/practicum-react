@@ -29,9 +29,9 @@ const Main = () => {
 
     const isIngredientPage = location.pathname.includes(routes.ingredients);
 
+
     return (
         <>
-
             {isIngredientPage && !sessionStorage.getItem('openModalIngredient') ? (
                 <IngredientsPage/>
             ) : (
