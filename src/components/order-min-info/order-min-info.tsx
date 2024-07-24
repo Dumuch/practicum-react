@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import styles from './styles.module.css'
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useNavigate} from "react-router-dom";
-import {IIngredient, TOrder} from "../../models/common";
+import {EStatusOrderUI, IIngredient, TOrder} from "../../models/common";
 import {useAppDispatch, useAppSelector} from "../../services";
 import {setCurrentOrder} from "../../services/common";
 
@@ -36,16 +36,13 @@ const OrderMinInfo: FC<IProps> = ({order, uri, visibleStatus = false}) => {
         dispatch(setCurrentOrder(order))
     }
 
-    let statusStr = 'Создан'
     let statusColor = ''
 
     switch (status) {
-        case 'pending':
-            statusStr = 'Готовится'
+        case 'created':
             statusColor = 'color-accent'
             break
         case 'done':
-            statusStr = 'Выполнен'
             statusColor = 'color-success'
             break
     }
@@ -61,7 +58,7 @@ const OrderMinInfo: FC<IProps> = ({order, uri, visibleStatus = false}) => {
 
                 <h3 className={'text text_type_main-medium mb-4'}>{name}</h3>
                 {visibleStatus && (
-                    <p className={`text text_type_main-default mb-20 ${statusColor}`}>{statusStr}</p>
+                    <p className={`text text_type_main-default mb-20 ${statusColor}`}>{EStatusOrderUI[status]}</p>
                 )}
 
                 <div className={styles.footer}>

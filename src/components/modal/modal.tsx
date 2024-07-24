@@ -51,7 +51,7 @@ const Modal: FC<ModalProps> = ({children, onClose, title}) => {
                                 <CloseIcon type="primary"/>
                             </button>
                         </div>
-                        <div className={'mt-5'}>
+                        <div className={`${styles.body} mt-5`}>
                             {children}
                         </div>
                     </div>

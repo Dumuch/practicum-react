@@ -6,6 +6,13 @@
     background-color: var(--background);
     border-radius: 20px;
     z-index: 10001;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.body {
 }
 
 .closeButton {

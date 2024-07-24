@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import styles from "./styles.module.css";
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IIngredient, TOrder} from "../../models/common";
+import {EStatusOrderUI, IIngredient, TOrder} from "../../models/common";
 import {useAppSelector} from "../../services";
 
 interface IProps extends TOrder {
@@ -10,17 +10,6 @@ interface IProps extends TOrder {
 const FeedDetails: FC<IProps> = (order) => {
     const {ingredients, name, number, status, createdAt} = order
     const allIngredients = useAppSelector((state) => state.ingredientsStore.ingredients)
-
-    let statusStr = 'Выполнен'
-
-    switch (status) {
-        case 'pending':
-            statusStr = 'Готовится'
-            break
-        case 'created':
-            statusStr = 'Создан'
-            break
-    }
 
     const findIngredientsByGroup: { ingredient: IIngredient, quantity: number }[] = []
 
@@ -48,11 +37,11 @@ const FeedDetails: FC<IProps> = (order) => {
     const price = findIngredientsByGroup.reduce((acc, {ingredient, quantity}) => acc + ingredient.price * quantity, 0)
 
     return (
-        <div className={`${styles.container} d-flex mb-20 flex-column`}>
+        <div className={`${styles.container} d-flex flex-column`}>
             <span className={`text text_type_digits-default mb-10 text-align-center`}>#{number}</span>
 
             <h2 className={'text text_type_main-medium mb-5'}>{name}:</h2>
-            <span className={`${styles.status} text text_type_main-default mb-20`}>{statusStr}</span>
+            <span className={`${styles.status} text text_type_main-default mb-20`}>{EStatusOrderUI[status]}</span>
 
             <span className={'text text_type_main-medium'}>Состав:</span>
             <ul className={`${styles.list} list mt-5`}>

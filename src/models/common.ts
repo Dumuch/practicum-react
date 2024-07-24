@@ -75,7 +75,19 @@ export type TOrder = {
     ingredients:string[]
     name:string
     number:number
-    status: "done" | 'created' | 'pending'
+    status: EStatusOrder
     updatedAt: string
     _id: string
+}
+
+export enum EStatusOrder {
+    pending = 'pending',
+    done = 'done',
+    created = 'created'
+}
+
+export enum EStatusOrderUI {
+    pending = 'Готовится',
+    done = 'Выполнен',
+    created = 'Создан'
 }
