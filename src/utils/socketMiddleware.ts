@@ -13,20 +13,19 @@ export type TWSStoreActions<T, S> = {
     onMessage: (payload: T) => unknown,
 };
 
-export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions<T, S>): Middleware => {
+export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions<T, S>, withToken = false): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket: WebSocket | null = null;
 
         return next => (action: AppActions) => {
-            const {dispatch, getState} = store;
+            const {dispatch} = store;
             const {type} = action;
             const {wsInit, onOpen, onClose, onError, onMessage} = wsActions;
-            const {user} = getState().userStore;
 
             if (type === wsInit) {
                 let uri = wsUrl
-                if (user) {
-                    uri = `${wsUrl}?token=${localStorage.getItem('accessToken') ?? ''}`
+                if (withToken) {
+                    uri = `${wsUrl}?token=${sessionStorage.getItem('accessToken')?.replace('Bearer ', '') ?? ''}`
                 }
                 socket = new WebSocket(uri);
             }

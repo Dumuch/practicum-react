@@ -8,6 +8,7 @@ export {default as IngredientsPage} from './ingredients/ingredients'
 export {default as NotFound404Page} from './not-found/not-found'
 export {default as FeedPage} from './feed/feed'
 export {default as FeedDetailsPage} from './feed-details/feed-details'
+export {default as ProfileOrdersPage} from './profile-orders/profile-orders'
 
 
 export const routes = {
@@ -18,7 +19,7 @@ export const routes = {
     resetPassword: '/reset-password',
     profile: {
         main: '/profile',
-        orders: 'orders'
+        orders: '/profile/orders'
     },
     ingredients: '/ingredients',
     feed: '/feed',

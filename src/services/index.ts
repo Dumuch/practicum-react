@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux'
 import {configureStore} from '@reduxjs/toolkit'
-import commonReducer, {INIT_WS, setOrders} from './common';
+import commonReducer, {INIT_WS, setOrders, setUserOrders} from './common';
 import ingredientsReducer from './ingredients';
 import orderReducer from './order';
 import userReducer from './user';
@@ -14,6 +14,11 @@ const wsOrdersReducers = {
     onMessage: setOrders
 };
 
+const wsUserOrdersReducers = {
+    wsInit: INIT_WS,
+    onMessage: setUserOrders
+};
+
 export const store = configureStore({
     reducer: {
         commonStore: commonReducer,
@@ -21,7 +26,7 @@ export const store = configureStore({
         orderStore: orderReducer,
         userStore: userReducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware(WS_API.orders, wsOrdersReducers))
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(socketMiddleware(WS_API.orders, wsOrdersReducers), socketMiddleware(WS_API.userOrders, wsUserOrdersReducers, true))
 })
 
 export type RootState = ReturnType<typeof store.getState>

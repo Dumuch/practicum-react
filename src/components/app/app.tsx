@@ -9,8 +9,7 @@ import {
     ProfilePage,
     NotFound404Page,
     routes,
-    FeedPage,
-    FeedDetailsPage
+    FeedPage, ProfileOrdersPage,
 } from "../../pages";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import {useAppDispatch} from "../../services";
@@ -58,18 +57,17 @@ function App() {
                     <ProtectedRouteElement>
                         <ProfilePage/>
                     </ProtectedRouteElement>
-                }>
-                    <Route path={routes.profile.orders} element={
-                        <ProtectedRouteElement>
-                            <ProfilePage/>
-                        </ProtectedRouteElement>
-                    }/>
-                    <Route path={`${routes.profile.orders}/:id`} element={
-                        <ProtectedRouteElement>
-                            <ProfilePage/>
-                        </ProtectedRouteElement>
-                    }/>
-                </Route>
+                }/>
+                <Route path={routes.profile.orders}  element={
+                    <ProtectedRouteElement>
+                        <ProfileOrdersPage/>
+                    </ProtectedRouteElement>
+                }/>
+                <Route path={`${routes.profile.orders}/:id`} element={
+                    <ProtectedRouteElement>
+                        <ProfileOrdersPage/>
+                    </ProtectedRouteElement>
+                }/>
                 <Route path={`${routes.ingredients}/:id`} element={<MainPage/>}/>
                 <Route path="*" element={<NotFound404Page/>}/>
             </Routes>

@@ -24,7 +24,7 @@ const FeedDetailsPage = () => {
                 dispatch(setCurrentOrder(find))
             }
         }
-    }, [location.pathname, data?.orders]);
+    }, [location.pathname, data, dispatch]);
 
 
     return (

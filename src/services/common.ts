@@ -1,6 +1,6 @@
-import {createAction, createAsyncThunk, createSlice, nanoid} from '@reduxjs/toolkit'
+import {createAction, createSlice, nanoid} from '@reduxjs/toolkit'
 import {IIngredient, TOrder, WsOrders} from '../models/common';
-import { arrayMove } from '../helpers';
+import {arrayMove} from '../helpers';
 
 export interface CommonState {
     applyIngredients: { id: string, data: IIngredient }[]
@@ -8,6 +8,9 @@ export interface CommonState {
     currentIngredient: IIngredient | null
     order: {},
     orders: {
+        data: WsOrders | null
+    },
+    userOrders: {
         data: WsOrders | null
     },
     currentOrder: TOrder | null
@@ -19,6 +22,9 @@ const initialState: CommonState = {
     order: {},
     applyBun: null,
     orders: {
+        data: null
+    },
+    userOrders: {
         data: null
     },
     currentOrder: null
@@ -35,6 +41,9 @@ export const commonSlice = createSlice({
         setOrders: create.reducer<WsOrders>((state, action) => {
             state.orders.data = action.payload
         }),
+        setUserOrders: create.reducer<WsOrders>((state, action) => {
+            state.userOrders.data = action.payload
+        }),
         setCurrentIngredient: create.reducer<IIngredient | null>((state, action) => {
             state.currentIngredient = action.payload
         }),
@@ -44,7 +53,7 @@ export const commonSlice = createSlice({
         addIngredient: create.preparedReducer(
             (ingredient: IIngredient) => {
                 const id = nanoid()
-                return { payload: { id, data: ingredient } }
+                return {payload: {id, data: ingredient}}
             },
             (state, action) => {
                 const newIngredients = [...state.applyIngredients]
@@ -71,7 +80,8 @@ export const {
     setApplyBun,
     removeIngredient,
     setOrders,
-    setCurrentOrder
+    setCurrentOrder,
+    setUserOrders
 } = commonSlice.actions
 
 export default commonSlice.reducer

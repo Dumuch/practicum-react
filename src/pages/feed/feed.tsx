@@ -50,7 +50,7 @@ const Feed = () => {
         } else if (isFeedPage) {
             setOpenDetailsPage(false)
         }
-    }, [currentOrder, location.pathname, data?.orders]);
+    }, [currentOrder, location.pathname, data?.orders, data, dispatch, isFeedPage, openDetailsPage]);
 
     return (
         <>
@@ -69,7 +69,7 @@ const Feed = () => {
                                         <h2 className={'text text_type_main-large mt-10 mb-5'}>Лента заказов</h2>
                                         <ul className={`${stylesFeed.listOrders} list`}>
                                             {data.orders.map((order) => {
-                                                return <li key={order._id}><OrderMinInfo {...order} /></li>
+                                                return <li key={order._id}><OrderMinInfo order={order} uri={routes.feed} /></li>
                                             })}
                                         </ul>
 

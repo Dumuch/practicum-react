@@ -2,21 +2,23 @@ import React, {FC} from "react";
 import styles from './styles.module.css'
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useNavigate} from "react-router-dom";
-import {routes} from "../../pages";
 import {IIngredient, TOrder} from "../../models/common";
 import {useAppDispatch, useAppSelector} from "../../services";
 import {setCurrentOrder} from "../../services/common";
 
-interface IProps extends TOrder {
+interface IProps {
+    order: TOrder
+    uri: string
+    visibleStatus?: boolean
 }
 
 const MAX_VISIBLE_INGREDIENTS = 6
 
-const OrderMinInfo: FC<IProps> = (order) => {
+const OrderMinInfo: FC<IProps> = ({order, uri, visibleStatus = false}) => {
     const navigate = useNavigate();
     const allIngredients = useAppSelector((state) => state.ingredientsStore.ingredients)
     const dispatch = useAppDispatch()
-    const {ingredients, name, number, createdAt, _id} = order
+    const {ingredients, name, number, createdAt, _id, status} = order
 
     const findIngredients: IIngredient[] = []
 
@@ -30,10 +32,23 @@ const OrderMinInfo: FC<IProps> = (order) => {
     const price = findIngredients.reduce((acc, {price}) => acc + price, 0)
 
     const onClick = () => {
-        navigate(routes.feed + '/' + _id)
+        navigate(uri + '/' + _id)
         dispatch(setCurrentOrder(order))
     }
 
+    let statusStr = 'Создан'
+    let statusColor = ''
+
+    switch (status) {
+        case 'pending':
+            statusStr = 'Готовится'
+            statusColor = 'color-accent'
+            break
+        case 'done':
+            statusStr = 'Выполнен'
+            statusColor = 'color-success'
+            break
+    }
 
     return (
         <>
@@ -45,6 +60,9 @@ const OrderMinInfo: FC<IProps> = (order) => {
                 </div>
 
                 <h3 className={'text text_type_main-medium mb-4'}>{name}</h3>
+                {visibleStatus && (
+                    <p className={`text text_type_main-default mb-20 ${statusColor}`}>{statusStr}</p>
+                )}
 
                 <div className={styles.footer}>
                     <div className={styles.images}>

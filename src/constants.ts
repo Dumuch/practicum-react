@@ -14,6 +14,7 @@ export const API = {
 const WS_BASE_URL = 'wss://norma.nomoreparties.space';
 
 export const WS_API = {
-    orders: WS_BASE_URL + '/orders/all'
+    orders: WS_BASE_URL + '/orders/all',
+    userOrders: WS_BASE_URL + '/orders'
 }
 

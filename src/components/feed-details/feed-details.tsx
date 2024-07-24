@@ -1,6 +1,5 @@
 import React, {FC} from "react";
 import styles from "./styles.module.css";
-import img from "../../images/img.jpg";
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IIngredient, TOrder} from "../../models/common";
 import {useAppSelector} from "../../services";
@@ -9,7 +8,7 @@ interface IProps extends TOrder {
 }
 
 const FeedDetails: FC<IProps> = (order) => {
-    const {ingredients, name, number, status, createdAt, _id} = order
+    const {ingredients, name, number, status, createdAt} = order
     const allIngredients = useAppSelector((state) => state.ingredientsStore.ingredients)
 
     let statusStr = 'Выполнен'
