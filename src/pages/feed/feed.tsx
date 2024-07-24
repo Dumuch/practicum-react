@@ -9,7 +9,7 @@ import {FeedDetailsPage, routes} from "../index";
 import {useLocation, useNavigate} from "react-router-dom";
 import Modal from "../../components/modal/modal";
 import FeedDetails from "../../components/feed-details/feed-details";
-import {setCurrentOrder} from "../../services/common";
+import {closeWSOrders, connectWSOrders, setCurrentOrder} from "../../services/common";
 import {chunkArray} from "../../helpers";
 
 const Feed = () => {
@@ -19,6 +19,13 @@ const Feed = () => {
     const currentOrder = useAppSelector((state) => state.commonStore.currentOrder)
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(connectWSOrders())
+        return () =>{
+            dispatch(closeWSOrders())
+        }
+    }, []);
 
     const sortByStatus = data?.orders.reduce((acc, data) => {
         if (data.status === 'done') {
@@ -56,7 +63,7 @@ const Feed = () => {
     return (
         <>
             {openDetailsPage ? (
-                <FeedDetailsPage/>
+                <FeedDetailsPage data={data}/>
             ) : (
                 <div className={`${styles.app} d-flex flex-column`}>
                     <AppHeader/>

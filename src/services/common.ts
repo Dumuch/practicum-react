@@ -30,9 +30,19 @@ const initialState: CommonState = {
     currentOrder: null
 }
 
-export const INIT_WS = 'orders/ws/init'
+export const INIT_WS_ORDERS = 'INIT_WS_ORDERS'
+export const INIT_WS_USER_ORDERS = 'INIT_WS_USER_ORDERS'
 
-export const connectWSOrders = createAction(INIT_WS)
+export const CLOSE_WS_ORDERS = 'CLOSE_WS_ORDERS'
+export const CLOSE_WS_USER_ORDERS = 'CLOSE_WS_USER_ORDERS'
+
+
+export const connectWSOrders = createAction(INIT_WS_ORDERS)
+export const connectWSUserOrders = createAction(INIT_WS_USER_ORDERS)
+
+export const closeWSOrders = createAction(CLOSE_WS_ORDERS)
+export const closeWSUserOrders = createAction(CLOSE_WS_USER_ORDERS)
+
 
 export const commonSlice = createSlice({
     name: 'common',

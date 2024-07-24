@@ -1,6 +1,12 @@
 import {useDispatch, useSelector} from 'react-redux'
 import {configureStore} from '@reduxjs/toolkit'
-import commonReducer, {INIT_WS, setOrders, setUserOrders} from './common';
+import commonReducer, {
+    setOrders,
+    setUserOrders,
+    INIT_WS_ORDERS,
+    CLOSE_WS_ORDERS,
+    INIT_WS_USER_ORDERS, CLOSE_WS_USER_ORDERS
+} from './common';
 import ingredientsReducer from './ingredients';
 import orderReducer from './order';
 import userReducer from './user';
@@ -10,12 +16,14 @@ import {
 import {WS_API} from "../constants";
 
 const wsOrdersReducers = {
-    wsInit: INIT_WS,
+    wsInit: INIT_WS_ORDERS,
+    wsClose: CLOSE_WS_ORDERS,
     onMessage: setOrders
 };
 
 const wsUserOrdersReducers = {
-    wsInit: INIT_WS,
+    wsInit: INIT_WS_USER_ORDERS,
+    wsClose: CLOSE_WS_USER_ORDERS,
     onMessage: setUserOrders
 };
 

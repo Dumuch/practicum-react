@@ -23,7 +23,6 @@ function App() {
 
     useEffect(() => {
         dispatch(fetchUser())
-        dispatch(connectWSOrders())
         dispatch(fetchIngredients())
     }, [dispatch]);
 

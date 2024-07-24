@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import styles from "../../components/app/styles.module.css";
 import AppHeader from "../../components/app-header/app-header";
 import FeedDetails from "../../components/feed-details/feed-details";
@@ -6,9 +6,9 @@ import {useAppDispatch, useAppSelector} from "../../services";
 import {setCurrentOrder} from "../../services/common";
 import {useLocation} from "react-router-dom";
 import stylesFeed from "./styles.module.css";
+import {WsOrders} from "../../models/common";
 
-const FeedDetailsPage = () => {
-    const data = useAppSelector((state) => state.commonStore.orders.data)
+const FeedDetailsPage:FC<{data: WsOrders | null}> = ({data}) => {
     const dispatch = useAppDispatch()
     const currentOrder = useAppSelector((state) => state.commonStore.currentOrder)
     const location = useLocation();

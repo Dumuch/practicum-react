@@ -5,23 +5,23 @@ import {getCurrentTimestamp} from "../helpers";
 
 export type AppActions = any;
 
-export type TWSStoreActions<T, S> = {
-    wsInit: S,
+export type TWSStoreActions<T> = {
+    wsInit: string,
+    wsClose: string,
     onOpen?: (payload: Event) => unknown,
     onClose?: (payload: Event) => unknown,
     onError?: (payload: Event) => unknown,
     onMessage: (payload: T) => unknown,
 };
 
-export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions<T, S>, withToken = false): Middleware => {
+export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions<T>, withToken = false): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket: WebSocket | null = null;
 
         return next => (action: AppActions) => {
             const {dispatch} = store;
             const {type} = action;
-            const {wsInit, onOpen, onClose, onError, onMessage} = wsActions;
-
+            const {wsInit, onOpen, onClose, onError, onMessage, wsClose} = wsActions;
             if (type === wsInit) {
                 let uri = wsUrl
                 if (withToken) {
@@ -29,6 +29,11 @@ export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions
                 }
                 socket = new WebSocket(uri);
             }
+
+            if (type === wsClose) {
+                socket?.close()
+            }
+
             if (socket) {
                 socket.onopen = event => {
                     onOpen && dispatch(<UnknownAction>onOpen(event));
