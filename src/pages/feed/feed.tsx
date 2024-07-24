@@ -10,6 +10,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import Modal from "../../components/modal/modal";
 import FeedDetails from "../../components/feed-details/feed-details";
 import {setCurrentOrder} from "../../services/common";
+import {chunkArray} from "../../helpers";
 
 const Feed = () => {
     const [openDetailsPage, setOpenDetailsPage] = useState(true)
@@ -69,7 +70,8 @@ const Feed = () => {
                                         <h2 className={'text text_type_main-large mt-10 mb-5'}>Лента заказов</h2>
                                         <ul className={`${stylesFeed.listOrders} list`}>
                                             {data.orders.map((order) => {
-                                                return <li key={order._id}><OrderMinInfo order={order} uri={routes.feed} /></li>
+                                                return <li key={order._id}><OrderMinInfo order={order}
+                                                                                         uri={routes.feed}/></li>
                                             })}
                                         </ul>
 
@@ -79,23 +81,37 @@ const Feed = () => {
                                     <div className={'d-flex mb-20'}>
                                         <div className={`${stylesFeed.column} mr-15`}>
                                             <span className={'text text_type_main-medium'}>Готовы:</span>
-                                            <ul className={`${stylesFeed.list} list mt-5`}>
-                                                {sortByStatus.done.map(({number}) => {
-                                                    return (<li key={number}>
-                                                        <p className={`text text_type_digits-default ${stylesFeed.highlight}`}>{number}</p>
-                                                    </li>)
+
+                                            <div className={'d-flex flex-wrap'}>
+                                                {chunkArray(sortByStatus.done, 10).map((chunk, chunkIndex) => {
+                                                    return (
+                                                        <ul className={`${stylesFeed.list} list mt-5 mr-5`} key={chunkIndex}>
+                                                            {chunk.map(({number}) => {
+                                                                return (<li key={number}>
+                                                                    <p className={`text text_type_digits-default ${stylesFeed.highlight}`}>{number}</p>
+                                                                </li>)
+                                                            })}
+                                                        </ul>
+                                                    )
                                                 })}
-                                            </ul>
+                                            </div>
                                         </div>
                                         <div className={stylesFeed.column}>
                                             <span className={'text text_type_main-medium'}>В работе:</span>
-                                            <ul className={'list mt-5'}>
-                                                {sortByStatus.pending.map(({number}) => {
-                                                    return (<li key={number}>
-                                                        <p className={`text text_type_digits-default`}>{number}</p>
-                                                    </li>)
+                                            <div className={'d-flex flex-wrap'}>
+                                                {chunkArray(sortByStatus.pending, 10).map((chunk, chunkIndex) => {
+                                                    return (
+                                                        <ul className={`${stylesFeed.list} list mt-5 mr-5`}
+                                                            key={chunkIndex}>
+                                                            {chunk.map(({number}) => {
+                                                                return (<li key={number}>
+                                                                    <p className={`text text_type_digits-default`}>{number}</p>
+                                                                </li>)
+                                                            })}
+                                                        </ul>
+                                                    )
                                                 })}
-                                            </ul>
+                                            </div>
                                         </div>
                                     </div>
 
