@@ -1,0 +1,21 @@
+.column {
+    flex-grow: 1;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.listOrders {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: calc(80vh - 100px);
+    overflow: auto;
+}
+
+.highlight {
+    color: var(--colors-interface-success);
+}

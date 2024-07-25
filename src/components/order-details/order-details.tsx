@@ -3,6 +3,7 @@ import img from '../../images/img.jpg'
 import styles from './styles.module.css'
 import {useAppSelector} from '../../services';
 
+
 const OrderDetails = () => {
     const order = useAppSelector((state) => state.orderStore.order)
 

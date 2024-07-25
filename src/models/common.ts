@@ -62,3 +62,32 @@ export interface IUpdateUserReq {
     email: string,
     name: string
 }
+
+export type WsOrders = {
+    success:boolean
+    total: number
+    totalToday: number
+    orders: TOrder[]
+}
+
+export type TOrder = {
+    createdAt:string
+    ingredients:string[]
+    name:string
+    number:number
+    status: EStatusOrder
+    updatedAt: string
+    _id: string
+}
+
+export enum EStatusOrder {
+    pending = 'pending',
+    done = 'done',
+    created = 'created'
+}
+
+export enum EStatusOrderUI {
+    pending = 'Готовится',
+    done = 'Выполнен',
+    created = 'Создан'
+}

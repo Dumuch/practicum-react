@@ -66,6 +66,10 @@ code {
     text-align: center;
 }
 
+.text-align-right {
+    text-align: right;
+}
+
 .form {
     display: flex;
     flex-direction: column;
@@ -100,4 +104,20 @@ code {
 
 .link:hover {
     opacity: 0.75;
+}
+
+.text-neon {
+    text-shadow: 0 0 6px rgba(76,76,255, 0.2), 0 0 30px rgba(76,76,255, 0.14), 0 0 12px rgba(76,76,255, 0.12), 0 0 21px rgba(76,76,255, 0.12), 0 0 34px rgba(76,76,255, 0.18), 0 0 54px rgba(76,76,255, 0.12);
+}
+
+.color-success {
+    color: var(--colors-interface-success)
+}
+
+.color-accent {
+    color: var(--colors-interface-accent)
+}
+
+.color-error {
+    color: var(--colors-interface-error)
 }

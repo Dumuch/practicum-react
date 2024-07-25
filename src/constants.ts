@@ -10,3 +10,11 @@ export const API = {
     logout: BASE_URL + '/auth/logout'
 
 }
+
+const WS_BASE_URL = 'wss://norma.nomoreparties.space';
+
+export const WS_API = {
+    orders: WS_BASE_URL + '/orders/all',
+    userOrders: WS_BASE_URL + '/orders'
+}
+

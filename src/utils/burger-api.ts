@@ -12,7 +12,10 @@ export const submitOrder = async (values: object) => {
     return request(API.orders, {
         method: 'POST',
         body: values ? JSON.stringify(values) : undefined,
-        headers: HEADERS_WITH_DATA
+        headers: {
+            ...HEADERS_WITH_DATA,
+            authorization: sessionStorage.getItem('accessToken') ?? ''
+        }
     }).then((data) => data)
 }
 

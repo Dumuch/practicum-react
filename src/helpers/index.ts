@@ -49,3 +49,13 @@ export const arrayMove = (arr: any[], old_index: number, new_index: number) => {
 export const request = (url: string, options?: RequestInit) => {
     return fetch(url, options).then(checkResponse)
 }
+
+export const getCurrentTimestamp = (): number => new Date().getTime() / 1000;
+
+export const chunkArray = <T>(array: T[], chunkSize: number) => {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+};
