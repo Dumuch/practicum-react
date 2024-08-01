@@ -16,7 +16,7 @@ export interface CommonState {
     currentOrder: TOrder | null
 }
 
-const initialState: CommonState = {
+export const initialState: CommonState = {
     applyIngredients: [],
     currentIngredient: null,
     order: {},

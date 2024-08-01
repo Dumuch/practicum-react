@@ -35,3 +35,14 @@
 //     }
 //   }
 // }
+
+import {INGREDIENT_CARD_SELECTOR} from "../constants";
+
+Cypress.Commands.add('runApp', () => {
+    cy.visit('/');
+    cy.intercept('GET', '/api/ingredients', {fixture: 'ingredients.json'})
+})
+
+Cypress.Commands.add('openIngredientDetails', () => {
+    cy.get(INGREDIENT_CARD_SELECTOR).contains('Котлета 1').click();
+})

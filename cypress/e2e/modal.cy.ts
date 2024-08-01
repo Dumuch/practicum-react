@@ -1,32 +1,30 @@
-describe('modal', function() {
-    it('open modal details ingredient', function() {
-        cy.visit('http://localhost:3000');
-        cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' })
+import {
+    CLOSE_BUTTON_MODAL_SELECTOR,
+    INGREDIENT_DETAILS_TITLE_SELECTOR,
+    OVERLAY_MODAL_SELECTOR
+} from "../constants";
 
-        cy.get('[data-testid="ingredient-card"]').contains('Котлета 1').click();
+describe('modal', function () {
+    it('open modal details ingredient', function () {
+        cy.runApp();
+        cy.openIngredientDetails();
 
-        cy.get('[data-testid="ingredient-details-title"]').contains('Котлета 1');
+        cy.get(INGREDIENT_DETAILS_TITLE_SELECTOR).contains('Котлета 1');
     });
 
-    it('close modal - click on close button', function() {
-        cy.visit('http://localhost:3000');
-        cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' })
+    it('close modal - click on close button', function () {
+        cy.runApp();
+        cy.openIngredientDetails();
 
-        cy.get('[data-testid="ingredient-card"]').contains('Котлета 1').click();
-
-        cy.get('[data-testid="close-button-modal"]').click()
-
-        cy.get('[data-testid="ingredient-details-title"]').should('not.exist');
+        cy.get(CLOSE_BUTTON_MODAL_SELECTOR).click()
+        cy.get(INGREDIENT_DETAILS_TITLE_SELECTOR).should('not.exist');
     });
 
-    it('close modal - click on overlay', function() {
-        cy.visit('http://localhost:3000');
-        cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' })
+    it('close modal - click on overlay', function () {
+        cy.runApp();
+        cy.openIngredientDetails();
 
-        cy.get('[data-testid="ingredient-card"]').contains('Котлета 1').click();
-
-        cy.get('[data-testid="overlay-modal"]').click(1, 1)
-
-        cy.get('[data-testid="ingredient-details-title"]').should('not.exist');
+        cy.get(OVERLAY_MODAL_SELECTOR).click(1, 1)
+        cy.get(INGREDIENT_DETAILS_TITLE_SELECTOR).should('not.exist');
     });
 });
