@@ -25,7 +25,7 @@ const Feed = () => {
         return () =>{
             dispatch(closeWSOrders())
         }
-    }, []);
+    }, [dispatch]);
 
     const sortByStatus = data?.orders.reduce((acc, data) => {
         if (data.status === 'done') {

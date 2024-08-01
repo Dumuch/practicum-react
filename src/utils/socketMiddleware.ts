@@ -14,7 +14,7 @@ export type TWSStoreActions<T> = {
     onMessage: (payload: T) => unknown,
 };
 
-export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions<T>, withToken = false): Middleware => {
+export const socketMiddleware = <T>(wsUrl: string, wsActions: TWSStoreActions<T>, withToken = false): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket: WebSocket | null = null;
 
