@@ -36,10 +36,12 @@ export const socketMiddleware = <T>(wsUrl: string, wsActions: TWSStoreActions<T>
 
             if (socket) {
                 socket.onopen = event => {
+                    // eslint-disable-next-line
                     onOpen && dispatch(<UnknownAction>onOpen(event));
                 };
 
                 socket.onerror = event => {
+                    // eslint-disable-next-line
                     onError && dispatch(<UnknownAction>onError(event));
                 };
 
@@ -47,11 +49,12 @@ export const socketMiddleware = <T>(wsUrl: string, wsActions: TWSStoreActions<T>
                     const {data} = event;
                     const parsedData = JSON.parse(data);
                     const {success, ...restParsedData} = parsedData;
-
+                    // eslint-disable-next-line
                     dispatch(<UnknownAction>onMessage({...restParsedData, timestamp: getCurrentTimestamp()}));
                 };
 
                 socket.onclose = event => {
+                    // eslint-disable-next-line
                     onClose && dispatch(<UnknownAction>onClose(event));
                 };
             }
