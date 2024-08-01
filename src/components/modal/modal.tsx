@@ -46,7 +46,7 @@ const Modal: FC<ModalProps> = ({children, onClose, title}) => {
                         <div className={styles.header}>
                             {title && <p className={'text text_type_main-medium pr-10'}>{title}</p>}
 
-                            <button className={`${styles.closeButton} ${title ? styles.closeButtonWithTitle : ''}`}
+                            <button data-testid={'close-button-modal'} className={`${styles.closeButton} ${title ? styles.closeButtonWithTitle : ''}`}
                                     onClick={onClose}>
                                 <CloseIcon type="primary"/>
                             </button>

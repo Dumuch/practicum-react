@@ -26,6 +26,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "e2e": "concurrently \"npm run start\" \"npx cypress open\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -53,6 +54,8 @@
     "@babel/preset-typescript": "^7.24.7",
     "@testing-library/react": "^16.0.0",
     "babel-jest": "^29.7.0",
+    "concurrently": "^8.2.2",
+    "cypress": "^13.13.2",
     "fetch-mock": "^10.1.1",
     "jest": "^27.5.1",
     "jest-fetch-mock": "^3.0.3",

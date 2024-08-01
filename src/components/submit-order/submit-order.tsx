@@ -33,7 +33,7 @@ const SubmitOrder: FC<SubmitOrderProps> = ({price}) => {
     return (
         <div className="d-flex align-items-center justify-end mt-10">
             <div className={`${styles.costWrapper} d-flex mr-10 align-items-center`}>
-                <span className={'text text_type_digits-medium pr-2'}>{price}</span>
+                <span className={'text text_type_digits-medium pr-2'} data-testid={'total-price'}>{price}</span>
                 <CurrencyIcon type="primary"/>
             </div>
 
