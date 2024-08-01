@@ -10,7 +10,7 @@ interface IngredientCardProps {
 }
 
 const IngredientCard: FC<IngredientCardProps> = ({ ingredient }) => {
-    const applyIngredients = useAppSelector((state) => state.commonStore.applyIngredients)
+    const applyIngredients = useAppSelector(({commonStore}) => commonStore.applyIngredients)
     const applyBun = useAppSelector((state) => state.commonStore.applyBun)
 
     const [{ isDrag }, dragRef] = useDrag({
