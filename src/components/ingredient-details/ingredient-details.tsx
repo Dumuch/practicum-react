@@ -15,7 +15,7 @@ const IngredientDetails: FC<IngredientModalProps> = ({ ingredient }) => {
                 </div>
 
                 <div className="d-flex justify-center mt-4 mb-8">
-                    <h4 className={`${styles.title} text text_type_main-medium`}>{ingredient.name}</h4>
+                    <h4 className={`${styles.title} text text_type_main-medium`} data-testid={'ingredient-details-title'}>{ingredient.name}</h4>
                 </div>
 
                 <ul className={`${styles.list} list d-flex flex-wrap mb-15`}>

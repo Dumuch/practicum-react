@@ -42,7 +42,7 @@ const BurgerConstructor: FC<BurgerConstructorProps> = () => {
 
 
     return (
-        <div ref={dropTarget} className={`${styles.wrapperBurgerIngredients} mt-25`}>
+        <div data-testid={'burger-constructor'} ref={dropTarget} className={`${styles.wrapperBurgerIngredients} mt-25`}>
             {price === 0 ? (
                 <p className={'text text_type_main-medium text-align-right'}>Добавьте свои ингредиенты</p>
             ) : (

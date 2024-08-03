@@ -14,7 +14,7 @@ export type TWSStoreActions<T> = {
     onMessage: (payload: T) => unknown,
 };
 
-export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions<T>, withToken = false): Middleware => {
+export const socketMiddleware = <T>(wsUrl: string, wsActions: TWSStoreActions<T>, withToken = false): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket: WebSocket | null = null;
 
@@ -36,10 +36,12 @@ export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions
 
             if (socket) {
                 socket.onopen = event => {
+                    // eslint-disable-next-line
                     onOpen && dispatch(<UnknownAction>onOpen(event));
                 };
 
                 socket.onerror = event => {
+                    // eslint-disable-next-line
                     onError && dispatch(<UnknownAction>onError(event));
                 };
 
@@ -47,11 +49,12 @@ export const socketMiddleware = <T, S>(wsUrl: string, wsActions: TWSStoreActions
                     const {data} = event;
                     const parsedData = JSON.parse(data);
                     const {success, ...restParsedData} = parsedData;
-
+                    // eslint-disable-next-line
                     dispatch(<UnknownAction>onMessage({...restParsedData, timestamp: getCurrentTimestamp()}));
                 };
 
                 socket.onclose = event => {
+                    // eslint-disable-next-line
                     onClose && dispatch(<UnknownAction>onClose(event));
                 };
             }

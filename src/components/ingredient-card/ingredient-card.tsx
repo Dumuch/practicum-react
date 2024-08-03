@@ -10,7 +10,7 @@ interface IngredientCardProps {
 }
 
 const IngredientCard: FC<IngredientCardProps> = ({ ingredient }) => {
-    const applyIngredients = useAppSelector((state) => state.commonStore.applyIngredients)
+    const applyIngredients = useAppSelector(({commonStore}) => commonStore.applyIngredients)
     const applyBun = useAppSelector((state) => state.commonStore.applyBun)
 
     const [{ isDrag }, dragRef] = useDrag({
@@ -31,7 +31,7 @@ const IngredientCard: FC<IngredientCardProps> = ({ ingredient }) => {
     }, [applyIngredients, applyBun, ingredient])
 
     return (
-        <div className={`pb-10 ${isDrag && styles.draggable}`} ref={dragRef}>
+        <div className={`pb-10 ${isDrag && styles.draggable}`} ref={dragRef} data-testid="ingredient-card">
             <div className={'d-flex justify-center pl-4 pr-4 position-relative'}>
                 {count > 0 && (
                     <Counter count={count} size="default" extraClass="m-1" />
